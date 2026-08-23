@@ -1,0 +1,128 @@
+<div class="career-visual">
+  <div class="center">
+    DATA
+  </div>
+
+  <div class="path path-research">
+    RESEARCH
+  </div>
+
+  <div class="path path-engineering">
+    ENGINEERING
+  </div>
+
+  <div class="path path-product">
+    PRODUCT
+  </div>
+
+  <div class="line line-research"></div>
+  <div class="line line-engineering"></div>
+  <div class="line line-product"></div>
+</div>
+
+<style>
+  .career-visual {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+  }
+
+  .center {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 130px;
+    height: 130px;
+
+    transform: translate(-50%, -50%);
+
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+
+    display: grid;
+    place-items: center;
+
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+
+    z-index: 2;
+  }
+
+  .path {
+    position: absolute;
+
+    padding: 10px 14px;
+
+    border-radius: 999px;
+
+    background: #ffffff;
+    color: #00664f;
+
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+
+    z-index: 3;
+  }
+
+  .path-research {
+    left: 50%;
+    top: 15%;
+
+    transform: translateX(-50%);
+  }
+
+  .path-engineering {
+    left: 11%;
+    bottom: 17%;
+  }
+
+  .path-product {
+    right: 11%;
+    bottom: 17%;
+  }
+
+  .line {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 125px;
+    height: 1px;
+
+    transform-origin: left center;
+
+    background: rgba(255, 255, 255, 0.32);
+  }
+
+  .line-research {
+    transform: rotate(-90deg);
+  }
+
+  .line-engineering {
+    transform: rotate(145deg);
+  }
+
+  .line-product {
+    transform: rotate(35deg);
+  }
+
+  @media (max-width: 900px) {
+    .career-visual {
+      min-height: 360px;
+    }
+
+    .center {
+      width: 110px;
+      height: 110px;
+
+      font-size: 18px;
+    }
+  }
+</style>

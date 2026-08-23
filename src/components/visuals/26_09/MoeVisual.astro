@@ -1,0 +1,138 @@
+<div class="moe-visual">
+  <div class="flow-box">
+    INPUT
+  </div>
+
+  <div class="vertical-line"></div>
+
+  <div class="flow-box router">
+    ROUTER
+  </div>
+
+  <div class="experts">
+    <div class="expert active">
+      E1
+    </div>
+
+    <div class="expert">
+      E2
+    </div>
+
+    <div class="expert active">
+      E3
+    </div>
+
+    <div class="expert">
+      E4
+    </div>
+  </div>
+
+  <div class="flow-box">
+    OUTPUT
+  </div>
+
+  <span class="caption">
+    TOP-K EXPERT ROUTING
+  </span>
+</div>
+
+<style>
+  .moe-visual {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 22px;
+  }
+
+  .flow-box {
+    min-width: 105px;
+
+    padding: 13px 20px;
+
+    border: 1px solid rgba(255, 255, 255, 0.75);
+
+    text-align: center;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .router {
+    background: #ffffff;
+    color: #00664f;
+  }
+
+  .vertical-line {
+    width: 1px;
+    height: 18px;
+
+    margin-top: -10px;
+    margin-bottom: -10px;
+
+    background: rgba(255, 255, 255, 0.4);
+  }
+
+  .experts {
+    display: grid;
+    grid-template-columns: repeat(4, 56px);
+
+    gap: 12px;
+  }
+
+  .expert {
+    width: 56px;
+    height: 56px;
+
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 50%;
+
+    display: grid;
+    place-items: center;
+
+    font-size: 10px;
+    font-weight: 800;
+  }
+
+  .expert.active {
+    background: #ffffff;
+    color: #00664f;
+  }
+
+  .caption {
+    position: absolute;
+
+    right: 28px;
+    bottom: 24px;
+
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+
+    opacity: 0.5;
+  }
+
+  @media (max-width: 900px) {
+    .moe-visual {
+      min-height: 360px;
+    }
+
+    .experts {
+      grid-template-columns: repeat(4, 48px);
+      gap: 9px;
+    }
+
+    .expert {
+      width: 48px;
+      height: 48px;
+    }
+  }
+</style>

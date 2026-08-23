@@ -1,0 +1,145 @@
+<div class="agent-visual">
+  <div class="orbit orbit-inner"></div>
+  <div class="orbit orbit-outer"></div>
+
+  <div class="agent-core">
+    <span>AGENT</span>
+  </div>
+
+  <div class="agent-node node-plan">
+    PLAN
+  </div>
+
+  <div class="agent-node node-tools">
+    TOOLS
+  </div>
+
+  <div class="agent-node node-memory">
+    MEMORY
+  </div>
+
+  <div class="agent-node node-act">
+    ACT
+  </div>
+</div>
+
+<style>
+  .agent-visual {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+  }
+
+  .orbit {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 50%;
+  }
+
+  .orbit-inner {
+    width: 310px;
+    height: 310px;
+  }
+
+  .orbit-outer {
+    width: 430px;
+    height: 430px;
+  }
+
+  .agent-core {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    width: 190px;
+    height: 190px;
+
+    transform: translate(-50%, -50%);
+
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+
+    display: grid;
+    place-items: center;
+  }
+
+  .agent-core span {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+
+  .agent-node {
+    position: absolute;
+
+    min-width: 74px;
+    height: 32px;
+
+    padding: 0 12px;
+
+    border-radius: 999px;
+
+    background: #ffffff;
+    color: #00664f;
+
+    display: grid;
+    place-items: center;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+
+  .node-plan {
+    left: 50%;
+    top: 14%;
+    transform: translateX(-50%);
+  }
+
+  .node-tools {
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .node-memory {
+    left: 50%;
+    bottom: 12%;
+    transform: translateX(-50%);
+  }
+
+  .node-act {
+    left: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  @media (max-width: 900px) {
+    .agent-visual {
+      min-height: 360px;
+    }
+
+    .agent-core {
+      width: 150px;
+      height: 150px;
+    }
+
+    .agent-core span {
+      font-size: 20px;
+    }
+
+    .orbit-inner {
+      width: 245px;
+      height: 245px;
+    }
+
+    .orbit-outer {
+      width: 330px;
+      height: 330px;
+    }
+  }
+</style>

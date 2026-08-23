@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SEO from "../components/SEO.astro";
+import FeaturedVisual from "../components/visuals/FeaturedVisual.astro";
 
 const posts = (await getCollection("posts"))
   .filter((post) => !post.data.draft)
@@ -46,13 +47,18 @@ const formattedDate = featured
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+
     <SEO
       title="EWHA DS"
       description="이화여자대학교 데이터사이언스전공 제4대 학생회 피움이 운영하는 학술·진로 콘텐츠 아카이브"
       image="/default-og.png"
     />
 
-    <link rel="icon" type="image/png" href="/ewha-logo.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/ewha-logo.png"
+    />
 
     <style>
       :root {
@@ -76,6 +82,7 @@ const formattedDate = featured
 
       body {
         margin: 0;
+
         background: var(--background);
         color: var(--text);
 
@@ -234,306 +241,6 @@ const formattedDate = featured
         line-height: 1.5;
       }
 
-      .featured-visual {
-        position: relative;
-        overflow: hidden;
-
-        background:
-          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-
-        background-size: 48px 48px;
-      }
-
-      /* =========================
-         AGENT VISUAL
-      ========================= */
-
-      .agent-core {
-        width: 190px;
-        height: 190px;
-
-        position: absolute;
-        left: 50%;
-        top: 50%;
-
-        transform: translate(-50%, -50%);
-
-        border-radius: 50%;
-        border: 1px solid rgba(255, 255, 255, 0.8);
-
-        display: grid;
-        place-items: center;
-
-        font-size: 24px;
-        font-weight: 800;
-      }
-
-      .orbit {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-
-        border: 1px solid rgba(255, 255, 255, 0.24);
-        border-radius: 50%;
-
-        transform: translate(-50%, -50%);
-      }
-
-      .orbit.one {
-        width: 310px;
-        height: 310px;
-      }
-
-      .orbit.two {
-        width: 430px;
-        height: 430px;
-      }
-
-      .dot {
-        position: absolute;
-
-        width: 74px;
-        height: 32px;
-
-        border-radius: 999px;
-
-        background: var(--white);
-        color: var(--green);
-
-        display: grid;
-        place-items: center;
-
-        font-size: 11px;
-        font-weight: 800;
-      }
-
-      .dot.one {
-        top: 15%;
-        left: 39%;
-      }
-
-      .dot.two {
-        top: 47%;
-        right: 8%;
-      }
-
-      .dot.three {
-        bottom: 13%;
-        left: 38%;
-      }
-
-      .dot.four {
-        top: 47%;
-        left: 8%;
-      }
-
-      /* =========================
-         RAG VISUAL
-      ========================= */
-
-      .flow-diagram {
-        height: 100%;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        gap: 16px;
-        padding: 40px;
-      }
-
-      .flow-node {
-        min-width: 108px;
-
-        padding: 18px;
-
-        border: 1px solid rgba(255, 255, 255, 0.75);
-
-        text-align: center;
-
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 0.07em;
-      }
-
-      .flow-node:last-child {
-        background: var(--white);
-        color: var(--green);
-      }
-
-      .flow-arrow {
-        font-size: 24px;
-        opacity: 0.65;
-      }
-
-      /* =========================
-         MOE VISUAL
-      ========================= */
-
-      .moe-diagram {
-        height: 100%;
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        gap: 28px;
-      }
-
-      .moe-input,
-      .moe-output,
-      .moe-router {
-        min-width: 100px;
-
-        padding: 13px 20px;
-
-        border: 1px solid rgba(255, 255, 255, 0.75);
-
-        text-align: center;
-
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-      }
-
-      .moe-router {
-        background: var(--white);
-        color: var(--green);
-      }
-
-      .experts {
-        display: grid;
-        grid-template-columns: repeat(4, 56px);
-
-        gap: 12px;
-      }
-
-      .expert {
-        width: 56px;
-        height: 56px;
-
-        border-radius: 50%;
-        border: 1px solid rgba(255, 255, 255, 0.72);
-
-        display: grid;
-        place-items: center;
-
-        font-size: 11px;
-        font-weight: 800;
-      }
-
-      .expert:nth-child(1),
-      .expert:nth-child(3) {
-        background: var(--white);
-        color: var(--green);
-      }
-
-      /* =========================
-         RESEARCH VISUAL
-      ========================= */
-
-      .research-diagram {
-        height: 100%;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        padding: 48px 36px;
-      }
-
-      .research-step {
-        text-align: center;
-      }
-
-      .research-step span {
-        display: block;
-
-        margin-bottom: 10px;
-
-        font-size: 10px;
-        letter-spacing: 0.14em;
-
-        opacity: 0.65;
-      }
-
-      .research-step strong {
-        font-size: 12px;
-        letter-spacing: 0.08em;
-      }
-
-      .research-line {
-        width: 58px;
-        height: 1px;
-
-        margin: 0 14px;
-
-        background: rgba(255, 255, 255, 0.42);
-      }
-
-      /* =========================
-         CAREER VISUAL
-      ========================= */
-
-      .career-diagram {
-        height: 100%;
-        position: relative;
-      }
-
-      .career-center {
-        width: 130px;
-        height: 130px;
-
-        position: absolute;
-        left: 50%;
-        top: 50%;
-
-        transform: translate(-50%, -50%);
-
-        border-radius: 50%;
-        border: 1px solid rgba(255, 255, 255, 0.8);
-
-        display: grid;
-        place-items: center;
-
-        font-size: 20px;
-        font-weight: 800;
-      }
-
-      .career-path {
-        position: absolute;
-
-        padding: 10px 14px;
-
-        border-radius: 999px;
-
-        background: var(--white);
-        color: var(--green);
-
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: 0.05em;
-      }
-
-      .career-one {
-        top: 16%;
-        left: 50%;
-
-        transform: translateX(-50%);
-      }
-
-      .career-two {
-        bottom: 18%;
-        left: 12%;
-      }
-
-      .career-three {
-        bottom: 18%;
-        right: 12%;
-      }
-
       /* =========================
          EXPLORE
       ========================= */
@@ -559,6 +266,7 @@ const formattedDate = featured
 
       .sections-title span {
         color: var(--muted);
+
         font-size: 13px;
       }
 
@@ -632,6 +340,7 @@ const formattedDate = featured
           min-height: auto;
 
           gap: 48px;
+
           padding: 64px 0;
         }
 
@@ -641,39 +350,6 @@ const formattedDate = featured
 
         .featured {
           grid-template-columns: 1fr;
-        }
-
-        .featured-visual {
-          min-height: 360px;
-        }
-
-        .flow-diagram {
-          flex-wrap: wrap;
-          align-content: center;
-
-          padding: 36px 24px;
-        }
-
-        .flow-node {
-          min-width: 96px;
-        }
-
-        .experts {
-          grid-template-columns: repeat(4, 48px);
-        }
-
-        .expert {
-          width: 48px;
-          height: 48px;
-        }
-
-        .research-diagram {
-          padding: 36px 18px;
-        }
-
-        .research-line {
-          width: 32px;
-          margin: 0 8px;
         }
 
         .cards {
@@ -700,7 +376,9 @@ const formattedDate = featured
 
       <section class="hero">
         <div>
-          <div class="hero-kicker">EWHA DATA SCIENCE</div>
+          <div class="hero-kicker">
+            EWHA DATA SCIENCE
+          </div>
 
           <h1 class="hero-title">
             <span>IDEAS</span>
@@ -715,16 +393,33 @@ const formattedDate = featured
           </p>
 
           <div class="hero-tags">
-            <a href="/tech" class="tag"> TECH </a>
+            <a
+              href="/tech"
+              class="tag"
+            >
+              TECH
+            </a>
 
-            <a href="/research" class="tag"> RESEARCH </a>
+            <a
+              href="/research"
+              class="tag"
+            >
+              RESEARCH
+            </a>
 
-            <a href="/career" class="tag"> CAREER </a>
+            <a
+              href="/career"
+              class="tag"
+            >
+              CAREER
+            </a>
           </div>
         </div>
       </section>
 
-      <div class="section-label">FEATURED ARTICLE</div>
+      <div class="section-label">
+        FEATURED ARTICLE
+      </div>
 
       {
         featured && (
@@ -732,111 +427,39 @@ const formattedDate = featured
             <section class="featured">
               <div class="featured-copy">
                 <div class="featured-meta">
-                  <span>{featured.data.category} / LATEST</span>
+                  <span>
+                    {featured.data.category} / LATEST
+                  </span>
 
-                  <span>{formattedDate}</span>
+                  <span>
+                    {formattedDate}
+                  </span>
                 </div>
 
                 <div>
-                  <h2 class="featured-title">{featured.data.title}</h2>
+                  <h2 class="featured-title">
+                    {featured.data.title}
+                  </h2>
 
-                  <div class="featured-subtitle">{featured.data.subtitle}</div>
+                  <div class="featured-subtitle">
+                    {featured.data.subtitle}
+                  </div>
                 </div>
 
                 <div class="featured-meta">
-                  <span>WRITTEN BY {featured.data.author}</span>
+                  <span>
+                    WRITTEN BY {featured.data.author}
+                  </span>
 
-                  <span>READ ARTICLE ↗</span>
+                  <span>
+                    READ ARTICLE ↗
+                  </span>
                 </div>
               </div>
 
-              <div class="featured-visual">
-                {featured.data.visual === "agent" && (
-                  <>
-                    <div class="orbit one" />
-                    <div class="orbit two" />
-
-                    <div class="agent-core">AGENT</div>
-
-                    <div class="dot one">PLAN</div>
-
-                    <div class="dot two">TOOLS</div>
-
-                    <div class="dot three">MEMORY</div>
-
-                    <div class="dot four">ACT</div>
-                  </>
-                )}
-
-                {featured.data.visual === "rag" && (
-                  <div class="flow-diagram">
-                    <div class="flow-node">QUERY</div>
-
-                    <div class="flow-arrow">→</div>
-
-                    <div class="flow-node">VECTOR DB</div>
-
-                    <div class="flow-arrow">→</div>
-
-                    <div class="flow-node">LLM</div>
-                  </div>
-                )}
-
-                {featured.data.visual === "moe" && (
-                  <div class="moe-diagram">
-                    <div class="moe-input">INPUT</div>
-
-                    <div class="moe-router">ROUTER</div>
-
-                    <div class="experts">
-                      <div class="expert">E1</div>
-
-                      <div class="expert">E2</div>
-
-                      <div class="expert">E3</div>
-
-                      <div class="expert">E4</div>
-                    </div>
-
-                    <div class="moe-output">OUTPUT</div>
-                  </div>
-                )}
-
-                {featured.data.visual === "research" && (
-                  <div class="research-diagram">
-                    <div class="research-step">
-                      <span>01</span>
-                      <strong>PROBLEM</strong>
-                    </div>
-
-                    <div class="research-line" />
-
-                    <div class="research-step">
-                      <span>02</span>
-                      <strong>METHOD</strong>
-                    </div>
-
-                    <div class="research-line" />
-
-                    <div class="research-step">
-                      <span>03</span>
-                      <strong>RESULT</strong>
-                    </div>
-                  </div>
-                )}
-
-                {featured.data.visual === "career" && (
-                  <div class="career-diagram">
-                    <div class="career-center">DATA</div>
-
-                    <div class="career-path career-one">RESEARCH</div>
-
-                    <div class="career-path career-two">ENGINEERING</div>
-
-                    <div class="career-path career-three">PRODUCT</div>
-                  </div>
-                )}
-              </div>
+              <FeaturedVisual
+                type={featured.data.visual}
+              />
             </section>
           </a>
         )
@@ -844,24 +467,39 @@ const formattedDate = featured
 
       <section class="sections">
         <div class="sections-title">
-          <h2>Explore EWHA DS</h2>
+          <h2>
+            Explore EWHA DS
+          </h2>
 
-          <span> TECH · RESEARCH · CAREER </span>
+          <span>
+            TECH · RESEARCH · CAREER
+          </span>
         </div>
 
         <div class="cards">
           {
             sections.map((section) => (
-              <a href={section.href} class="card">
-                <div class="card-label">{section.label}</div>
-
-                <div>
-                  <h3>{section.title}</h3>
-
-                  <p>{section.desc}</p>
+              <a
+                href={section.href}
+                class="card"
+              >
+                <div class="card-label">
+                  {section.label}
                 </div>
 
-                <div class="card-arrow">↗</div>
+                <div>
+                  <h3>
+                    {section.title}
+                  </h3>
+
+                  <p>
+                    {section.desc}
+                  </p>
+                </div>
+
+                <div class="card-arrow">
+                  ↗
+                </div>
               </a>
             ))
           }

@@ -6,17 +6,21 @@ import SEO from "../../components/SEO.astro";
 import "katex/dist/katex.min.css";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("posts");
+  const posts = (await getCollection("posts"))
+    .filter((post) => !post.data.draft);
 
-  return posts
-    .filter((post) => !post.data.draft)
-    .map((post) => ({
-      params: { id: post.id },
-      props: { post },
-    }));
+  return posts.map((post) => ({
+    params: {
+      id: post.id,
+    },
+    props: {
+      post,
+    },
+  }));
 }
 
 const { post } = Astro.props;
+
 const { Content, headings } = await render(post);
 
 const formattedDate = post.data.date
@@ -27,7 +31,9 @@ const formattedDate = post.data.date
   })
   .toUpperCase();
 
-const tocItems = headings.filter((heading) => heading.depth === 2);
+const tocItems = headings.filter(
+  (heading) => heading.depth === 2
+);
 
 const activeCategory =
   post.data.category === "TECH"
@@ -104,6 +110,7 @@ const activeCategory =
 
       .article-hero {
         padding: 70px 0 64px;
+
         border-bottom: 1px solid var(--line);
       }
 
@@ -267,6 +274,7 @@ const activeCategory =
 
       .article-content :global(a) {
         color: var(--green);
+
         border-bottom: 1px solid var(--green);
       }
 
@@ -307,7 +315,10 @@ const activeCategory =
 
         background: #eef1ef;
 
-        font-family: "SFMono-Regular", Consolas, monospace;
+        font-family:
+          "SFMono-Regular",
+          Consolas,
+          monospace;
 
         font-size: 0.9em;
       }
@@ -339,9 +350,10 @@ const activeCategory =
 
         margin: 42px 0;
       }
+
       /* =========================
-        MATH
-    ========================= */
+         MATH
+      ========================= */
 
       .article-content :global(.katex-display) {
         overflow-x: auto;
@@ -359,9 +371,10 @@ const activeCategory =
       .article-content :global(.katex) {
         font-size: 1.02em;
       }
+
       /* =========================
-   REFERENCES
-========================= */
+         REFERENCES
+      ========================= */
 
       .article-content :global(h2#references) {
         margin-top: 96px;
@@ -477,9 +490,16 @@ const activeCategory =
 
         font-weight: 700;
       }
+
+      /* =========================
+         AUTHOR LINK
+      ========================= */
+
       .author-link {
         color: var(--text);
+
         font-weight: 700;
+
         border-bottom: 1px solid transparent;
 
         transition:
@@ -683,7 +703,9 @@ const activeCategory =
               {post.data.category}
             </span>
 
-            <span> EWHA DS </span>
+            <span>
+              EWHA DS
+            </span>
           </div>
 
           <h1 class="article-title">
@@ -700,9 +722,9 @@ const activeCategory =
                 WRITTEN BY{" "}
               </span>
 
-              <strong>
-                {
-                  post.data.authorUrl ? (
+              {
+                post.data.authorUrl ? (
+                  <strong>
                     <a
                       href={post.data.authorUrl}
                       target="_blank"
@@ -711,11 +733,13 @@ const activeCategory =
                     >
                       {post.data.author} ↗
                     </a>
-                  ) : (
-                    <strong>{post.data.author}</strong>
-                  )
-                }
-              </strong>
+                  </strong>
+                ) : (
+                  <strong>
+                    {post.data.author}
+                  </strong>
+                )
+              }
             </div>
 
             <div>
@@ -733,7 +757,9 @@ const activeCategory =
         <div class="article-layout">
           <aside class="article-side">
             <div class="side-block">
-              <div class="side-label">CATEGORY</div>
+              <div class="side-label">
+                CATEGORY
+              </div>
 
               <div class="side-value">
                 {post.data.category}
@@ -741,7 +767,9 @@ const activeCategory =
             </div>
 
             <div class="side-block">
-              <div class="side-label">AUTHOR</div>
+              <div class="side-label">
+                AUTHOR
+              </div>
 
               <div class="side-value">
                 {
@@ -762,7 +790,9 @@ const activeCategory =
             </div>
 
             <div class="side-block">
-              <div class="side-label">PUBLISHED</div>
+              <div class="side-label">
+                PUBLISHED
+              </div>
 
               <div class="side-value">
                 {formattedDate}
@@ -775,30 +805,44 @@ const activeCategory =
           </main>
 
           <aside class="right-rail">
-            <div class="right-title">CONTENTS</div>
+            <div class="right-title">
+              CONTENTS
+            </div>
 
             {
               tocItems.length > 0 ? (
                 <nav class="toc">
-                  {tocItems.map((heading, index) => (
-                    <a class="toc-item" href={`#${heading.slug}`}>
-                      <span class="toc-number">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
+                  {
+                    tocItems.map((heading, index) => (
+                      <a
+                        class="toc-item"
+                        href={`#${heading.slug}`}
+                      >
+                        <span class="toc-number">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
 
-                      <span>{heading.text}</span>
-                    </a>
-                  ))}
+                        <span>
+                          {heading.text}
+                        </span>
+                      </a>
+                    ))
+                  }
                 </nav>
               ) : (
-                <div class="toc-empty">목차가 없습니다.</div>
+                <div class="toc-empty">
+                  목차가 없습니다.
+                </div>
               )
             }
           </aside>
         </div>
 
         <div class="article-end">
-          <a href={`/${post.data.category.toLowerCase()}`} class="back">
+          <a
+            href={`/${post.data.category.toLowerCase()}`}
+            class="back"
+          >
             ← BACK TO {post.data.category}
           </a>
         </div>

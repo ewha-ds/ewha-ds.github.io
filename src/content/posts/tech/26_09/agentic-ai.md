@@ -5,7 +5,7 @@ category: "TECH"
 author: "Minseon Son"
 date: 2026-09-02
 description: "AI Agent의 핵심 개념과 구조를 살펴봅니다."
-visual: "agent"
+visual: "26_09_agent"
 draft: false
 ---
 

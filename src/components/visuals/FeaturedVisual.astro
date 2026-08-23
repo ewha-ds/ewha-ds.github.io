@@ -1,0 +1,138 @@
+---
+interface Props {
+  type?: string;
+}
+
+const { type } = Astro.props;
+
+/*
+  visuals 아래의 모든 *Visual.astro 파일을 자동 탐색합니다.
+
+  예:
+  ./26_09/AgentVisual.astro
+  → 26_09_agent
+
+  ./26_10/AttentionMechanismVisual.astro
+  → 26_10_attention_mechanism
+
+  ./common/ResearchVisual.astro
+  → research
+*/
+
+const visualModules = import.meta.glob(
+  "./**/*Visual.astro",
+  {
+    eager: true,
+  }
+);
+
+function toSnakeCase(name: string) {
+  return name
+    .replace(/([a-z0-9])([A-Z])/g, "$1_$2")
+    .replace(/[-\s]+/g, "_")
+    .toLowerCase();
+}
+
+const visuals: Record<string, any> = {};
+
+for (const [path, module] of Object.entries(visualModules)) {
+  const match = path.match(
+    /^\.\/([^/]+)\/([^/]+)Visual\.astro$/
+  );
+
+  if (!match) continue;
+
+  const [, folder, fileName] = match;
+
+  const visualName = toSnakeCase(fileName);
+
+  const key =
+    folder === "common"
+      ? visualName
+      : `${folder}_${visualName}`;
+
+  visuals[key] = (module as any).default;
+}
+
+const VisualComponent =
+  type && visuals[type]
+    ? visuals[type]
+    : null;
+---
+
+<div class="featured-visual">
+  {
+    VisualComponent ? (
+      <VisualComponent />
+    ) : (
+      <div class="visual-fallback">
+        <span>EWHA DS</span>
+
+        {
+          type && (
+            <small>
+              VISUAL NOT FOUND · {type}
+            </small>
+          )
+        }
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .featured-visual {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+    overflow: hidden;
+
+    background:
+      linear-gradient(
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1px
+      );
+
+    background-size: 48px 48px;
+  }
+
+  .visual-fallback {
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+  }
+
+  .visual-fallback span {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    opacity: 0.75;
+  }
+
+  .visual-fallback small {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    opacity: 0.45;
+  }
+
+  @media (max-width: 900px) {
+    .featured-visual,
+    .visual-fallback {
+      min-height: 360px;
+    }
+  }
+</style>
