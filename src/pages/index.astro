@@ -1,17 +1,520 @@
 ---
+import { getCollection } from 'astro:content';
 
+const posts = (await getCollection('posts'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const featured = posts[0];
+
+const sections = [
+  {
+    label: 'TECH',
+    title: 'Technology',
+    desc: '데이터사이언스와 AI의 핵심 기술 및 최신 동향을 소개합니다',
+  },
+  {
+    label: 'RESEARCH',
+    title: 'Research',
+    desc: '주요 연구와 논문을 리뷰하고 학술적 흐름을 살펴봅니다',
+  },
+  {
+    label: 'CAREER',
+    title: 'Career',
+    desc: '데이터사이언스 전공자의 진로와 다양한 커리어 이야기를 기록합니다.',
+  },
+];
+
+const formattedDate = featured
+  ? featured.data.date
+      .toLocaleDateString('en-US', {
+        month: 'short',
+        day: '2-digit',
+        year: 'numeric',
+      })
+      .toUpperCase()
+  : '';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="EWHA DS" />
+    <title>EWHA DS</title>
+
+    <style>
+      :root {
+        --green: #00664f;
+        --green-dark: #004b3c;
+        --green-light: #eaf3ef;
+        --text: #171a19;
+        --muted: #707674;
+        --line: #dce4e1;
+        --background: #fafbf9;
+        --white: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--background);
+        color: var(--text);
+        font-family:
+          Pretendard,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        width: min(1440px, calc(100% - 48px));
+        margin: 0 auto;
+      }
+
+      .header {
+        height: 88px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brand {
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+      }
+
+      .nav {
+        display: flex;
+        gap: 32px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+
+      .hero {
+        min-height: 570px;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        align-items: end;
+        padding: 80px 0 72px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .hero-kicker {
+        color: var(--green);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        margin-bottom: 28px;
+      }
+
+      .hero-title {
+        margin: 0;
+        font-size: clamp(72px, 10vw, 148px);
+        line-height: 0.82;
+        letter-spacing: -0.07em;
+        font-weight: 800;
+      }
+
+      .hero-title span {
+        display: block;
+      }
+
+      .hero-info {
+        padding-left: 48px;
+        padding-bottom: 12px;
+      }
+
+      .hero-info p {
+        max-width: 440px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 20px;
+        line-height: 1.65;
+        letter-spacing: -0.02em;
+      }
+
+      .hero-tags {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 36px;
+      }
+
+      .tag {
+        padding: 9px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .section-label {
+        padding: 48px 0 20px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--green);
+        letter-spacing: 0.14em;
+      }
+
+      .featured {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        min-height: 480px;
+        background: var(--green);
+        color: var(--white);
+      }
+
+      .featured-copy {
+        padding: 52px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .featured-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        opacity: 0.8;
+      }
+
+      .featured-title {
+        margin: 0;
+        font-size: clamp(56px, 7vw, 104px);
+        line-height: 0.9;
+        letter-spacing: -0.06em;
+      }
+
+      .featured-subtitle {
+        margin-top: 24px;
+        font-size: 21px;
+        line-height: 1.5;
+      }
+
+      .featured-visual {
+        position: relative;
+        overflow: hidden;
+        background:
+          linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+        background-size: 48px 48px;
+      }
+
+      .agent-core {
+        width: 190px;
+        height: 190px;
+        border-radius: 50%;
+        border: 1px solid rgba(255,255,255,0.8);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        display: grid;
+        place-items: center;
+        font-size: 24px;
+        font-weight: 800;
+      }
+
+      .orbit {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        border: 1px solid rgba(255,255,255,0.24);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .orbit.one {
+        width: 310px;
+        height: 310px;
+      }
+
+      .orbit.two {
+        width: 430px;
+        height: 430px;
+      }
+
+      .dot {
+        position: absolute;
+        width: 74px;
+        height: 32px;
+        border-radius: 999px;
+        background: var(--white);
+        color: var(--green);
+        display: grid;
+        place-items: center;
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .dot.one {
+        top: 15%;
+        left: 39%;
+      }
+
+      .dot.two {
+        top: 47%;
+        right: 8%;
+      }
+
+      .dot.three {
+        bottom: 13%;
+        left: 38%;
+      }
+
+      .dot.four {
+        top: 47%;
+        left: 8%;
+      }
+
+      .sections {
+        padding: 90px 0 110px;
+      }
+
+      .sections-title {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        margin-bottom: 34px;
+      }
+
+      .sections-title h2 {
+        margin: 0;
+        font-size: 54px;
+        letter-spacing: -0.05em;
+      }
+
+      .sections-title span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        border-top: 1px solid var(--line);
+        border-left: 1px solid var(--line);
+      }
+
+      .card {
+        min-height: 330px;
+        padding: 34px;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: 180ms ease;
+      }
+
+      .card:hover {
+        background: var(--green-light);
+      }
+
+      .card-label {
+        font-size: 11px;
+        font-weight: 800;
+        color: var(--green);
+        letter-spacing: 0.14em;
+      }
+
+      .card h3 {
+        margin: 0 0 14px;
+        font-size: 34px;
+        letter-spacing: -0.04em;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.65;
+        font-size: 15px;
+      }
+
+      .card-arrow {
+        font-size: 24px;
+      }
+
+      .footer {
+        border-top: 1px solid var(--line);
+        padding: 36px 0 50px;
+        display: flex;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      @media (max-width: 900px) {
+        .page {
+          width: min(100% - 28px, 1440px);
+        }
+
+        .header {
+          height: 72px;
+        }
+
+        .nav {
+          display: none;
+        }
+
+        .hero {
+          grid-template-columns: 1fr;
+          min-height: auto;
+          gap: 48px;
+          padding: 64px 0;
+        }
+
+        .hero-info {
+          padding-left: 0;
+        }
+
+        .featured {
+          grid-template-columns: 1fr;
+        }
+
+        .featured-visual {
+          min-height: 360px;
+        }
+
+        .cards {
+          grid-template-columns: 1fr;
+        }
+
+        .sections-title {
+          align-items: start;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .sections-title h2 {
+          font-size: 42px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="page">
+      <header class="header">
+        <a href="/" class="brand">EWHA DS</a>
+
+        <nav class="nav">
+          <a href="#tech">TECH</a>
+          <a href="#research">RESEARCH</a>
+          <a href="#career">CAREER</a>
+          <a href="#about">ABOUT</a>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <div>
+          <div class="hero-kicker">EWHA DATA SCIENCE</div>
+
+          <h1 class="hero-title">
+            <span>IDEAS</span>
+            <span>IN DATA.</span>
+          </h1>
+        </div>
+
+        <div class="hero-info">
+          <p>
+            이화여자대학교 데이터사이언스전공 제4대 학생회 피움이<br />
+            운영하는 학술·진로 콘텐츠 아카이브
+          </p>
+
+          <div class="hero-tags">
+            <span class="tag">TECH</span>
+            <span class="tag">RESEARCH</span>
+            <span class="tag">CAREER</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-label">FEATURED ARTICLE</div>
+
+      {
+        featured && (
+          <a href={`/posts/${featured.id}/`}>
+            <section class="featured">
+              <div class="featured-copy">
+                <div class="featured-meta">
+                  <span>{featured.data.category} / LATEST</span>
+                  <span>{formattedDate}</span>
+                </div>
+
+                <div>
+                  <h2 class="featured-title">{featured.data.title}</h2>
+                  <div class="featured-subtitle">
+                    {featured.data.subtitle}
+                  </div>
+                </div>
+
+                <div class="featured-meta">
+                  <span>WRITTEN BY {featured.data.author}</span>
+                  <span>READ ARTICLE ↗</span>
+                </div>
+              </div>
+
+              <div class="featured-visual">
+                <div class="orbit one"></div>
+                <div class="orbit two"></div>
+
+                <div class="agent-core">AGENT</div>
+
+                <div class="dot one">PLAN</div>
+                <div class="dot two">TOOLS</div>
+                <div class="dot three">MEMORY</div>
+                <div class="dot four">ACT</div>
+              </div>
+            </section>
+          </a>
+        )
+      }
+
+      <section class="sections">
+        <div class="sections-title">
+          <h2>Explore EWHA DS</h2>
+          <span>TECH · RESEARCH · CAREER</span>
+        </div>
+
+        <div class="cards">
+          {sections.map((section) => (
+            <article class="card">
+              <div class="card-label">{section.label}</div>
+
+              <div>
+                <h3>{section.title}</h3>
+                <p>{section.desc}</p>
+              </div>
+
+              <div class="card-arrow">↗</div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <footer class="footer" id="about">
+        <span>EWHA DS</span>
+        <span>© 2026 · TECH · RESEARCH · CAREER</span>
+      </footer>
+    </main>
+  </body>
 </html>
