@@ -1,0 +1,288 @@
+---
+import { getCollection } from "astro:content";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import SEO from "../components/SEO.astro";
+
+const posts = (await getCollection("posts"))
+  .filter((post) => !post.data.draft && post.data.category === "CAREER")
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const latest = posts[0];
+---
+
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <SEO
+      title="Career | EWHA DS"
+      description="데이터사이언스 전공자의 진로와 대학원, 산업, 커리어 이야기를 기록합니다."
+      image="/default-og.png"
+    />
+
+    <link rel="icon" type="image/png" href="/ewha-logo.png" />
+
+    <style>
+      :root {
+        --green: #00664f;
+        --green-light: #eaf3ef;
+        --text: #171a19;
+        --muted: #707674;
+        --line: #dce4e1;
+        --background: #fafbf9;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--background);
+        color: var(--text);
+
+        font-family:
+          Pretendard,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        width: min(1440px, calc(100% - 48px));
+        margin: 0 auto;
+      }
+
+      .hero {
+        padding: 90px 0 72px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .kicker {
+        margin-bottom: 24px;
+
+        color: var(--green);
+
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+      }
+
+      .title {
+        margin: 0;
+
+        font-size: clamp(72px, 10vw, 140px);
+        line-height: 0.86;
+        letter-spacing: -0.07em;
+      }
+
+      .desc {
+        max-width: 650px;
+
+        margin-top: 32px;
+
+        color: var(--muted);
+
+        font-size: 20px;
+        line-height: 1.7;
+      }
+
+      .latest {
+        padding: 56px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .section-label {
+        margin-bottom: 24px;
+
+        color: var(--green);
+
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+      }
+
+      .latest-card {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+
+        gap: 40px;
+
+        padding: 36px 0;
+      }
+
+      .latest-title {
+        margin: 0;
+
+        font-size: clamp(42px, 6vw, 82px);
+        letter-spacing: -0.05em;
+      }
+
+      .latest-subtitle {
+        margin-top: 18px;
+
+        color: var(--muted);
+
+        font-size: 18px;
+        line-height: 1.6;
+      }
+
+      .latest-meta {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+
+        color: var(--muted);
+
+        font-size: 12px;
+      }
+
+      .archive {
+        padding: 72px 0 110px;
+      }
+
+      .archive-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+
+        border-top: 1px solid var(--line);
+        border-left: 1px solid var(--line);
+      }
+
+      .post-card {
+        min-height: 260px;
+
+        padding: 30px;
+
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        transition: 180ms ease;
+      }
+
+      .post-card:hover {
+        background: var(--green-light);
+      }
+
+      .post-title {
+        margin: 0;
+
+        font-size: 30px;
+        letter-spacing: -0.04em;
+      }
+
+      .post-subtitle {
+        margin-top: 12px;
+
+        color: var(--muted);
+
+        line-height: 1.6;
+      }
+
+      .post-meta {
+        color: var(--muted);
+
+        font-size: 11px;
+        letter-spacing: 0.08em;
+      }
+
+      .empty {
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      @media (max-width: 900px) {
+        .page {
+          width: min(100% - 28px, 1440px);
+        }
+
+        .latest-card,
+        .archive-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .latest-meta {
+          justify-content: flex-start;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="page">
+      <Header active="CAREER" />
+
+      <section class="hero">
+        <div class="kicker">EWHA DS · CAREER</div>
+
+        <h1 class="title">CAREER</h1>
+
+        <p class="desc">
+          데이터사이언스 전공자의 진로와 대학원, 산업, 커리어 이야기를
+          기록합니다.
+        </p>
+      </section>
+
+      {
+        latest && (
+          <section class="latest">
+            <div class="section-label">LATEST CAREER ARTICLE</div>
+
+            <a href={`/posts/${latest.id}/`} class="latest-card">
+              <div>
+                <h2 class="latest-title">{latest.data.title}</h2>
+
+                <div class="latest-subtitle">{latest.data.subtitle}</div>
+              </div>
+
+              <div class="latest-meta">
+                {latest.data.author} ·{" "}
+                {latest.data.date.toLocaleDateString("en-US")}
+              </div>
+            </a>
+          </section>
+        )
+      }
+
+      <section class="archive">
+        <div class="section-label">ALL CAREER ARTICLES</div>
+
+        {
+          posts.length > 0 ? (
+            <div class="archive-grid">
+              {posts.map((post) => (
+                <a href={`/posts/${post.id}/`} class="post-card">
+                  <div>
+                    <h3 class="post-title">{post.data.title}</h3>
+
+                    <div class="post-subtitle">{post.data.subtitle}</div>
+                  </div>
+
+                  <div class="post-meta">
+                    {post.data.author} ·{" "}
+                    {post.data.date.toLocaleDateString("en-US")}
+                  </div>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <div class="empty">아직 등록된 글이 없습니다.</div>
+          )
+        }
+      </section>
+
+      <Footer />
+    </main>
+  </body>
+</html>

@@ -1,8 +1,12 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, render } from "astro:content";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import SEO from "../../components/SEO.astro";
+import "katex/dist/katex.min.css";
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts');
+  const posts = await getCollection("posts");
 
   return posts
     .filter((post) => !post.data.draft)
@@ -16,25 +20,40 @@ const { post } = Astro.props;
 const { Content, headings } = await render(post);
 
 const formattedDate = post.data.date
-  .toLocaleDateString('en-US', {
-    month: 'long',
-    day: '2-digit',
-    year: 'numeric',
+  .toLocaleDateString("en-US", {
+    month: "long",
+    day: "2-digit",
+    year: "numeric",
   })
   .toUpperCase();
 
 const tocItems = headings.filter((heading) => heading.depth === 2);
+
+const activeCategory =
+  post.data.category === "TECH"
+    ? "TECH"
+    : post.data.category === "RESEARCH"
+      ? "RESEARCH"
+      : post.data.category === "CAREER"
+        ? "CAREER"
+        : undefined;
 ---
 
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta
-      name="description"
-      content={post.data.description ?? post.data.subtitle}
+
+    <SEO
+      title={`${post.data.title} | EWHA DS`}
+      description={post.data.description ?? post.data.subtitle}
+      image={post.data.ogImage ?? "/default-og.png"}
+      type="article"
+      publishedTime={post.data.date}
+      author={post.data.author}
     />
-    <title>{post.data.title} | EWHA DS</title>
+
+    <link rel="icon" type="image/png" href="/ewha-logo.png" />
 
     <style>
       :root {
@@ -60,6 +79,7 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
         margin: 0;
         background: var(--background);
         color: var(--text);
+
         font-family:
           Pretendard,
           -apple-system,
@@ -79,32 +99,6 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
       }
 
       /* =========================
-         HEADER
-      ========================= */
-
-      .header {
-        height: 88px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 1px solid var(--line);
-      }
-
-      .brand {
-        font-size: 28px;
-        font-weight: 800;
-        letter-spacing: -0.04em;
-      }
-
-      .nav {
-        display: flex;
-        gap: 32px;
-        font-size: 14px;
-        font-weight: 600;
-        letter-spacing: 0.02em;
-      }
-
-      /* =========================
          ARTICLE HERO
       ========================= */
 
@@ -117,9 +111,11 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
         display: flex;
         justify-content: space-between;
         align-items: center;
+
         margin-bottom: 64px;
 
         color: var(--green);
+
         font-size: 12px;
         font-weight: 800;
         letter-spacing: 0.14em;
@@ -137,9 +133,11 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
 
       .article-subtitle {
         max-width: 720px;
+
         margin-top: 38px;
 
         color: var(--muted);
+
         font-size: 24px;
         line-height: 1.55;
         letter-spacing: -0.025em;
@@ -148,6 +146,7 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
       .article-meta {
         display: flex;
         gap: 36px;
+
         margin-top: 58px;
 
         font-size: 12px;
@@ -170,17 +169,13 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
       .article-layout {
         display: grid;
 
-        /*
-          왼쪽 메타
-          중앙 본문
-          오른쪽 목차
-        */
         grid-template-columns:
           minmax(150px, 190px)
           minmax(0, 760px)
           minmax(170px, 1fr);
 
         gap: 72px;
+
         align-items: start;
 
         padding: 80px 0 120px;
@@ -193,11 +188,13 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
       .article-side {
         position: sticky;
         top: 32px;
+
         align-self: start;
+
+        color: var(--muted);
 
         font-size: 12px;
         line-height: 1.8;
-        color: var(--muted);
       }
 
       .side-block + .side-block {
@@ -208,6 +205,7 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
         margin-bottom: 14px;
 
         color: var(--green);
+
         font-size: 10px;
         font-weight: 800;
         letter-spacing: 0.16em;
@@ -226,10 +224,6 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
         min-width: 0;
       }
 
-      /*
-        Markdown 안에 # 제목이 있어도
-        Hero에 이미 제목이 있으므로 숨김
-      */
       .article-content :global(h1) {
         display: none;
       }
@@ -294,6 +288,7 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
         padding: 26px 30px;
 
         border-left: 3px solid var(--green);
+
         background: var(--green-light);
       }
 
@@ -309,12 +304,10 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
         padding: 3px 6px;
 
         border-radius: 4px;
+
         background: #eef1ef;
 
-        font-family:
-          "SFMono-Regular",
-          Consolas,
-          monospace;
+        font-family: "SFMono-Regular", Consolas, monospace;
 
         font-size: 0.9em;
       }
@@ -333,6 +326,7 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
 
       .article-content :global(pre code) {
         padding: 0;
+
         background: transparent;
         color: inherit;
       }
@@ -345,6 +339,111 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
 
         margin: 42px 0;
       }
+      /* =========================
+        MATH
+    ========================= */
+
+      .article-content :global(.katex-display) {
+        overflow-x: auto;
+
+        margin: 38px 0;
+        padding: 24px 20px;
+
+        background: var(--green-light);
+      }
+
+      .article-content :global(.katex-display > .katex) {
+        text-align: center;
+      }
+
+      .article-content :global(.katex) {
+        font-size: 1.02em;
+      }
+      /* =========================
+   REFERENCES
+========================= */
+
+      .article-content :global(h2#references) {
+        margin-top: 96px;
+        padding-top: 40px;
+
+        border-top: 1px solid var(--line);
+      }
+
+      .article-content :global(h2#references + ol),
+      .article-content :global(h2#references + ul) {
+        margin-top: 28px;
+        padding-left: 0;
+
+        list-style: none;
+
+        counter-reset: reference;
+      }
+
+      .article-content :global(h2#references + ol li),
+      .article-content :global(h2#references + ul li) {
+        position: relative;
+
+        margin: 0;
+        padding: 18px 0 18px 44px;
+
+        border-bottom: 1px solid var(--line);
+
+        color: var(--muted);
+
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .article-content :global(h2#references + ol li) {
+        counter-increment: reference;
+      }
+
+      .article-content :global(h2#references + ol li::before) {
+        content: counter(reference, decimal-leading-zero);
+
+        position: absolute;
+        left: 0;
+        top: 19px;
+
+        color: var(--green);
+
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+      }
+
+      .article-content :global(h2#references + ul li::before) {
+        content: "↗";
+
+        position: absolute;
+        left: 0;
+        top: 17px;
+
+        color: var(--green);
+
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .article-content :global(h2#references + ol li a),
+      .article-content :global(h2#references + ul li a) {
+        color: var(--text);
+
+        border-bottom: 1px solid transparent;
+
+        font-weight: 600;
+
+        transition:
+          color 160ms ease,
+          border-color 160ms ease;
+      }
+
+      .article-content :global(h2#references + ol li a:hover),
+      .article-content :global(h2#references + ul li a:hover) {
+        color: var(--green);
+        border-bottom-color: var(--green);
+      }
 
       .article-content :global(hr) {
         margin: 72px 0;
@@ -355,6 +454,7 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
 
       .article-content :global(table) {
         width: 100%;
+
         margin: 36px 0;
 
         border-collapse: collapse;
@@ -366,13 +466,30 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
       .article-content :global(th),
       .article-content :global(td) {
         padding: 14px 16px;
+
         border: 1px solid var(--line);
+
         text-align: left;
       }
 
       .article-content :global(th) {
         background: var(--green-light);
+
         font-weight: 700;
+      }
+      .author-link {
+        color: var(--text);
+        font-weight: 700;
+        border-bottom: 1px solid transparent;
+
+        transition:
+          color 160ms ease,
+          border-color 160ms ease;
+      }
+
+      .author-link:hover {
+        color: var(--green);
+        border-bottom-color: var(--green);
       }
 
       /* =========================
@@ -382,9 +499,11 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
       .right-rail {
         position: sticky;
         top: 32px;
+
         align-self: start;
 
         padding-left: 30px;
+
         border-left: 1px solid var(--line);
       }
 
@@ -392,6 +511,7 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
         margin-bottom: 26px;
 
         color: var(--green);
+
         font-size: 10px;
         font-weight: 800;
         letter-spacing: 0.16em;
@@ -404,6 +524,7 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
 
       .toc-item {
         display: grid;
+
         grid-template-columns: 30px 1fr;
         gap: 12px;
 
@@ -423,32 +544,37 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
 
       .toc-item:hover {
         color: var(--green);
+
         transform: translateX(3px);
       }
 
       .toc-number {
         color: var(--green);
+
         font-variant-numeric: tabular-nums;
       }
 
       .toc-empty {
         color: var(--muted);
+
         font-size: 12px;
         line-height: 1.65;
       }
 
       /* =========================
-         END / FOOTER
+         ARTICLE END
       ========================= */
 
       .article-end {
-        border-top: 1px solid var(--line);
         padding: 48px 0 80px;
+
+        border-top: 1px solid var(--line);
       }
 
       .back {
         display: inline-flex;
         align-items: center;
+
         gap: 10px;
 
         font-size: 13px;
@@ -461,18 +587,8 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
 
       .back:hover {
         color: var(--green);
+
         transform: translateX(-3px);
-      }
-
-      .footer {
-        border-top: 1px solid var(--line);
-        padding: 36px 0 50px;
-
-        display: flex;
-        justify-content: space-between;
-
-        color: var(--muted);
-        font-size: 12px;
       }
 
       /* =========================
@@ -481,7 +597,10 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
 
       @media (max-width: 1100px) {
         .article-layout {
-          grid-template-columns: 150px minmax(0, 1fr);
+          grid-template-columns:
+            150px
+            minmax(0, 1fr);
+
           gap: 48px;
         }
 
@@ -499,14 +618,6 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
           width: min(100% - 28px, 1440px);
         }
 
-        .header {
-          height: 72px;
-        }
-
-        .nav {
-          display: none;
-        }
-
         .article-hero {
           padding: 52px 0;
         }
@@ -521,11 +632,13 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
 
         .article-subtitle {
           margin-top: 28px;
+
           font-size: 20px;
         }
 
         .article-meta {
           flex-direction: column;
+
           gap: 10px;
 
           margin-top: 42px;
@@ -533,6 +646,7 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
 
         .article-layout {
           display: block;
+
           padding: 56px 0 90px;
         }
 
@@ -554,33 +668,22 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
         .article-content :global(ol) {
           font-size: 16px;
         }
-
-        .footer {
-          gap: 18px;
-          flex-direction: column;
-        }
       }
     </style>
   </head>
 
   <body>
     <main class="page">
-      <header class="header">
-        <a href="/" class="brand">EWHA DS</a>
-
-        <nav class="nav">
-          <a href="/#tech">TECH</a>
-          <a href="/#research">RESEARCH</a>
-          <a href="/#career">CAREER</a>
-          <a href="/#about">ABOUT</a>
-        </nav>
-      </header>
+      <Header active={activeCategory} />
 
       <article>
         <header class="article-hero">
           <div class="article-topline">
-            <span>{post.data.category}</span>
-            <span>EWHA DS</span>
+            <span>
+              {post.data.category}
+            </span>
+
+            <span> EWHA DS </span>
           </div>
 
           <h1 class="article-title">
@@ -593,23 +696,45 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
 
           <div class="article-meta">
             <div>
-              <span>WRITTEN BY </span>
-              <strong>{post.data.author}</strong>
+              <span>
+                WRITTEN BY{" "}
+              </span>
+
+              <strong>
+                {
+                  post.data.authorUrl ? (
+                    <a
+                      href={post.data.authorUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="author-link"
+                    >
+                      {post.data.author} ↗
+                    </a>
+                  ) : (
+                    <strong>{post.data.author}</strong>
+                  )
+                }
+              </strong>
             </div>
 
             <div>
-              <span>PUBLISHED </span>
-              <strong>{formattedDate}</strong>
+              <span>
+                PUBLISHED{" "}
+              </span>
+
+              <strong>
+                {formattedDate}
+              </strong>
             </div>
           </div>
         </header>
 
         <div class="article-layout">
-
-          <!-- LEFT : META -->
           <aside class="article-side">
             <div class="side-block">
               <div class="side-label">CATEGORY</div>
+
               <div class="side-value">
                 {post.data.category}
               </div>
@@ -617,69 +742,69 @@ const tocItems = headings.filter((heading) => heading.depth === 2);
 
             <div class="side-block">
               <div class="side-label">AUTHOR</div>
+
               <div class="side-value">
-                {post.data.author}
+                {
+                  post.data.authorUrl ? (
+                    <a
+                      href={post.data.authorUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="author-link"
+                    >
+                      {post.data.author} ↗
+                    </a>
+                  ) : (
+                    post.data.author
+                  )
+                }
               </div>
             </div>
 
             <div class="side-block">
               <div class="side-label">PUBLISHED</div>
+
               <div class="side-value">
                 {formattedDate}
               </div>
             </div>
           </aside>
 
-          <!-- CENTER : ARTICLE -->
           <main class="article-content">
             <Content />
           </main>
 
-          <!-- RIGHT : CONTENTS -->
           <aside class="right-rail">
-            <div class="right-title">
-              CONTENTS
-            </div>
+            <div class="right-title">CONTENTS</div>
 
             {
               tocItems.length > 0 ? (
                 <nav class="toc">
                   {tocItems.map((heading, index) => (
-                    <a
-                      class="toc-item"
-                      href={`#${heading.slug}`}
-                    >
+                    <a class="toc-item" href={`#${heading.slug}`}>
                       <span class="toc-number">
-                        {String(index + 1).padStart(2, '0')}
+                        {String(index + 1).padStart(2, "0")}
                       </span>
 
-                      <span>
-                        {heading.text}
-                      </span>
+                      <span>{heading.text}</span>
                     </a>
                   ))}
                 </nav>
               ) : (
-                <div class="toc-empty">
-                  목차가 없습니다.
-                </div>
+                <div class="toc-empty">목차가 없습니다.</div>
               )
             }
           </aside>
-
         </div>
 
         <div class="article-end">
-          <a href="/" class="back">
-            ← BACK TO EWHA DS
+          <a href={`/${post.data.category.toLowerCase()}`} class="back">
+            ← BACK TO {post.data.category}
           </a>
         </div>
       </article>
 
-      <footer class="footer">
-        <span>EWHA DS</span>
-        <span>© 2026 · TECH · RESEARCH · CAREER</span>
-      </footer>
+      <Footer />
     </main>
   </body>
 </html>

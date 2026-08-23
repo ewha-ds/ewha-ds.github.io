@@ -13,9 +13,13 @@ const posts = defineCollection({
     subtitle: z.string(),
     category: z.enum(['TECH', 'RESEARCH', 'CAREER']),
     author: z.string(),
+    authorUrl: z.string().url().optional(),
     date: z.coerce.date(),
     description: z.string().optional(),
+    ogImage: z.string().optional(),
+    visual: z.enum(['agent', 'rag', 'moe', 'research', 'career']).optional(),
     draft: z.boolean().default(false),
+
   }),
 });
 

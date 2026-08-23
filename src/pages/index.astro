@@ -1,7 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import SEO from "../components/SEO.astro";
 
-const posts = (await getCollection('posts'))
+const posts = (await getCollection("posts"))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
@@ -9,39 +12,47 @@ const featured = posts[0];
 
 const sections = [
   {
-    label: 'TECH',
-    title: 'Technology',
-    desc: '데이터사이언스와 AI의 핵심 기술 및 최신 동향을 소개합니다',
+    label: "TECH",
+    title: "Technology",
+    desc: "데이터사이언스와 AI의 핵심 기술 및 최신 동향을 소개합니다",
+    href: "/tech",
   },
   {
-    label: 'RESEARCH',
-    title: 'Research',
-    desc: '주요 연구와 논문을 리뷰하고 학술적 흐름을 살펴봅니다',
+    label: "RESEARCH",
+    title: "Research",
+    desc: "주요 연구와 논문을 리뷰하고 학술적 흐름을 살펴봅니다",
+    href: "/research",
   },
   {
-    label: 'CAREER',
-    title: 'Career',
-    desc: '데이터사이언스 전공자의 진로와 다양한 커리어 이야기를 기록합니다.',
+    label: "CAREER",
+    title: "Career",
+    desc: "데이터사이언스 전공자의 진로와 다양한 커리어 이야기를 기록합니다.",
+    href: "/career",
   },
 ];
 
 const formattedDate = featured
   ? featured.data.date
-      .toLocaleDateString('en-US', {
-        month: 'short',
-        day: '2-digit',
-        year: 'numeric',
+      .toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
       })
       .toUpperCase()
-  : '';
+  : "";
 ---
 
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="EWHA DS" />
-    <title>EWHA DS</title>
+    <SEO
+      title="EWHA DS"
+      description="이화여자대학교 데이터사이언스전공 제4대 학생회 피움이 운영하는 학술·진로 콘텐츠 아카이브"
+      image="/default-og.png"
+    />
+
+    <link rel="icon" type="image/png" href="/ewha-logo.png" />
 
     <style>
       :root {
@@ -67,6 +78,7 @@ const formattedDate = featured
         margin: 0;
         background: var(--background);
         color: var(--text);
+
         font-family:
           Pretendard,
           -apple-system,
@@ -85,47 +97,35 @@ const formattedDate = featured
         margin: 0 auto;
       }
 
-      .header {
-        height: 88px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 1px solid var(--line);
-      }
-
-      .brand {
-        font-size: 28px;
-        font-weight: 800;
-        letter-spacing: -0.04em;
-      }
-
-      .nav {
-        display: flex;
-        gap: 32px;
-        font-size: 14px;
-        font-weight: 600;
-        letter-spacing: 0.02em;
-      }
+      /* =========================
+         HERO
+      ========================= */
 
       .hero {
         min-height: 570px;
+
         display: grid;
         grid-template-columns: 1.1fr 0.9fr;
         align-items: end;
+
         padding: 80px 0 72px;
+
         border-bottom: 1px solid var(--line);
       }
 
       .hero-kicker {
+        margin-bottom: 28px;
+
         color: var(--green);
+
         font-size: 13px;
         font-weight: 700;
         letter-spacing: 0.14em;
-        margin-bottom: 28px;
       }
 
       .hero-title {
         margin: 0;
+
         font-size: clamp(72px, 10vw, 148px);
         line-height: 0.82;
         letter-spacing: -0.07em;
@@ -144,7 +144,9 @@ const formattedDate = featured
       .hero-info p {
         max-width: 440px;
         margin: 0;
+
         color: var(--muted);
+
         font-size: 20px;
         line-height: 1.65;
         letter-spacing: -0.02em;
@@ -154,35 +156,54 @@ const formattedDate = featured
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
+
         margin-top: 36px;
       }
 
       .tag {
         padding: 9px 14px;
+
         border: 1px solid var(--line);
         border-radius: 999px;
+
         font-size: 12px;
         font-weight: 700;
+
+        transition: 160ms ease;
       }
+
+      .tag:hover {
+        background: var(--green-light);
+        border-color: var(--green);
+      }
+
+      /* =========================
+         FEATURED ARTICLE
+      ========================= */
 
       .section-label {
         padding: 48px 0 20px;
+
+        color: var(--green);
+
         font-size: 12px;
         font-weight: 700;
-        color: var(--green);
         letter-spacing: 0.14em;
       }
 
       .featured {
         display: grid;
         grid-template-columns: 1.15fr 0.85fr;
+
         min-height: 480px;
+
         background: var(--green);
         color: var(--white);
       }
 
       .featured-copy {
         padding: 52px;
+
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -191,13 +212,16 @@ const formattedDate = featured
       .featured-meta {
         display: flex;
         justify-content: space-between;
+
         font-size: 12px;
         letter-spacing: 0.12em;
+
         opacity: 0.8;
       }
 
       .featured-title {
         margin: 0;
+
         font-size: clamp(56px, 7vw, 104px);
         line-height: 0.9;
         letter-spacing: -0.06em;
@@ -205,6 +229,7 @@ const formattedDate = featured
 
       .featured-subtitle {
         margin-top: 24px;
+
         font-size: 21px;
         line-height: 1.5;
       }
@@ -212,23 +237,34 @@ const formattedDate = featured
       .featured-visual {
         position: relative;
         overflow: hidden;
+
         background:
-          linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+
         background-size: 48px 48px;
       }
+
+      /* =========================
+         AGENT VISUAL
+      ========================= */
 
       .agent-core {
         width: 190px;
         height: 190px;
-        border-radius: 50%;
-        border: 1px solid rgba(255,255,255,0.8);
+
         position: absolute;
         left: 50%;
         top: 50%;
+
         transform: translate(-50%, -50%);
+
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+
         display: grid;
         place-items: center;
+
         font-size: 24px;
         font-weight: 800;
       }
@@ -237,8 +273,10 @@ const formattedDate = featured
         position: absolute;
         left: 50%;
         top: 50%;
-        border: 1px solid rgba(255,255,255,0.24);
+
+        border: 1px solid rgba(255, 255, 255, 0.24);
         border-radius: 50%;
+
         transform: translate(-50%, -50%);
       }
 
@@ -254,13 +292,18 @@ const formattedDate = featured
 
       .dot {
         position: absolute;
+
         width: 74px;
         height: 32px;
+
         border-radius: 999px;
+
         background: var(--white);
         color: var(--green);
+
         display: grid;
         place-items: center;
+
         font-size: 11px;
         font-weight: 800;
       }
@@ -285,6 +328,216 @@ const formattedDate = featured
         left: 8%;
       }
 
+      /* =========================
+         RAG VISUAL
+      ========================= */
+
+      .flow-diagram {
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 16px;
+        padding: 40px;
+      }
+
+      .flow-node {
+        min-width: 108px;
+
+        padding: 18px;
+
+        border: 1px solid rgba(255, 255, 255, 0.75);
+
+        text-align: center;
+
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.07em;
+      }
+
+      .flow-node:last-child {
+        background: var(--white);
+        color: var(--green);
+      }
+
+      .flow-arrow {
+        font-size: 24px;
+        opacity: 0.65;
+      }
+
+      /* =========================
+         MOE VISUAL
+      ========================= */
+
+      .moe-diagram {
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        gap: 28px;
+      }
+
+      .moe-input,
+      .moe-output,
+      .moe-router {
+        min-width: 100px;
+
+        padding: 13px 20px;
+
+        border: 1px solid rgba(255, 255, 255, 0.75);
+
+        text-align: center;
+
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+      }
+
+      .moe-router {
+        background: var(--white);
+        color: var(--green);
+      }
+
+      .experts {
+        display: grid;
+        grid-template-columns: repeat(4, 56px);
+
+        gap: 12px;
+      }
+
+      .expert {
+        width: 56px;
+        height: 56px;
+
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.72);
+
+        display: grid;
+        place-items: center;
+
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .expert:nth-child(1),
+      .expert:nth-child(3) {
+        background: var(--white);
+        color: var(--green);
+      }
+
+      /* =========================
+         RESEARCH VISUAL
+      ========================= */
+
+      .research-diagram {
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 48px 36px;
+      }
+
+      .research-step {
+        text-align: center;
+      }
+
+      .research-step span {
+        display: block;
+
+        margin-bottom: 10px;
+
+        font-size: 10px;
+        letter-spacing: 0.14em;
+
+        opacity: 0.65;
+      }
+
+      .research-step strong {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+      }
+
+      .research-line {
+        width: 58px;
+        height: 1px;
+
+        margin: 0 14px;
+
+        background: rgba(255, 255, 255, 0.42);
+      }
+
+      /* =========================
+         CAREER VISUAL
+      ========================= */
+
+      .career-diagram {
+        height: 100%;
+        position: relative;
+      }
+
+      .career-center {
+        width: 130px;
+        height: 130px;
+
+        position: absolute;
+        left: 50%;
+        top: 50%;
+
+        transform: translate(-50%, -50%);
+
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+
+        display: grid;
+        place-items: center;
+
+        font-size: 20px;
+        font-weight: 800;
+      }
+
+      .career-path {
+        position: absolute;
+
+        padding: 10px 14px;
+
+        border-radius: 999px;
+
+        background: var(--white);
+        color: var(--green);
+
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+      }
+
+      .career-one {
+        top: 16%;
+        left: 50%;
+
+        transform: translateX(-50%);
+      }
+
+      .career-two {
+        bottom: 18%;
+        left: 12%;
+      }
+
+      .career-three {
+        bottom: 18%;
+        right: 12%;
+      }
+
+      /* =========================
+         EXPLORE
+      ========================= */
+
       .sections {
         padding: 90px 0 110px;
       }
@@ -293,11 +546,13 @@ const formattedDate = featured
         display: flex;
         align-items: end;
         justify-content: space-between;
+
         margin-bottom: 34px;
       }
 
       .sections-title h2 {
         margin: 0;
+
         font-size: 54px;
         letter-spacing: -0.05em;
       }
@@ -310,18 +565,23 @@ const formattedDate = featured
       .cards {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
+
         border-top: 1px solid var(--line);
         border-left: 1px solid var(--line);
       }
 
       .card {
         min-height: 330px;
+
         padding: 34px;
+
         border-right: 1px solid var(--line);
         border-bottom: 1px solid var(--line);
+
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+
         transition: 180ms ease;
       }
 
@@ -330,21 +590,25 @@ const formattedDate = featured
       }
 
       .card-label {
+        color: var(--green);
+
         font-size: 11px;
         font-weight: 800;
-        color: var(--green);
         letter-spacing: 0.14em;
       }
 
       .card h3 {
         margin: 0 0 14px;
+
         font-size: 34px;
         letter-spacing: -0.04em;
       }
 
       .card p {
         margin: 0;
+
         color: var(--muted);
+
         line-height: 1.65;
         font-size: 15px;
       }
@@ -353,31 +617,20 @@ const formattedDate = featured
         font-size: 24px;
       }
 
-      .footer {
-        border-top: 1px solid var(--line);
-        padding: 36px 0 50px;
-        display: flex;
-        justify-content: space-between;
-        color: var(--muted);
-        font-size: 12px;
-      }
+      /* =========================
+         MOBILE
+      ========================= */
 
       @media (max-width: 900px) {
         .page {
           width: min(100% - 28px, 1440px);
         }
 
-        .header {
-          height: 72px;
-        }
-
-        .nav {
-          display: none;
-        }
-
         .hero {
           grid-template-columns: 1fr;
+
           min-height: auto;
+
           gap: 48px;
           padding: 64px 0;
         }
@@ -394,6 +647,35 @@ const formattedDate = featured
           min-height: 360px;
         }
 
+        .flow-diagram {
+          flex-wrap: wrap;
+          align-content: center;
+
+          padding: 36px 24px;
+        }
+
+        .flow-node {
+          min-width: 96px;
+        }
+
+        .experts {
+          grid-template-columns: repeat(4, 48px);
+        }
+
+        .expert {
+          width: 48px;
+          height: 48px;
+        }
+
+        .research-diagram {
+          padding: 36px 18px;
+        }
+
+        .research-line {
+          width: 32px;
+          margin: 0 8px;
+        }
+
         .cards {
           grid-template-columns: 1fr;
         }
@@ -401,6 +683,7 @@ const formattedDate = featured
         .sections-title {
           align-items: start;
           flex-direction: column;
+
           gap: 12px;
         }
 
@@ -413,16 +696,7 @@ const formattedDate = featured
 
   <body>
     <main class="page">
-      <header class="header">
-        <a href="/" class="brand">EWHA DS</a>
-
-        <nav class="nav">
-          <a href="#tech">TECH</a>
-          <a href="#research">RESEARCH</a>
-          <a href="#career">CAREER</a>
-          <a href="#about">ABOUT</a>
-        </nav>
-      </header>
+      <Header />
 
       <section class="hero">
         <div>
@@ -441,9 +715,11 @@ const formattedDate = featured
           </p>
 
           <div class="hero-tags">
-            <span class="tag">TECH</span>
-            <span class="tag">RESEARCH</span>
-            <span class="tag">CAREER</span>
+            <a href="/tech" class="tag"> TECH </a>
+
+            <a href="/research" class="tag"> RESEARCH </a>
+
+            <a href="/career" class="tag"> CAREER </a>
           </div>
         </div>
       </section>
@@ -457,32 +733,109 @@ const formattedDate = featured
               <div class="featured-copy">
                 <div class="featured-meta">
                   <span>{featured.data.category} / LATEST</span>
+
                   <span>{formattedDate}</span>
                 </div>
 
                 <div>
                   <h2 class="featured-title">{featured.data.title}</h2>
-                  <div class="featured-subtitle">
-                    {featured.data.subtitle}
-                  </div>
+
+                  <div class="featured-subtitle">{featured.data.subtitle}</div>
                 </div>
 
                 <div class="featured-meta">
                   <span>WRITTEN BY {featured.data.author}</span>
+
                   <span>READ ARTICLE ↗</span>
                 </div>
               </div>
 
               <div class="featured-visual">
-                <div class="orbit one"></div>
-                <div class="orbit two"></div>
+                {featured.data.visual === "agent" && (
+                  <>
+                    <div class="orbit one" />
+                    <div class="orbit two" />
 
-                <div class="agent-core">AGENT</div>
+                    <div class="agent-core">AGENT</div>
 
-                <div class="dot one">PLAN</div>
-                <div class="dot two">TOOLS</div>
-                <div class="dot three">MEMORY</div>
-                <div class="dot four">ACT</div>
+                    <div class="dot one">PLAN</div>
+
+                    <div class="dot two">TOOLS</div>
+
+                    <div class="dot three">MEMORY</div>
+
+                    <div class="dot four">ACT</div>
+                  </>
+                )}
+
+                {featured.data.visual === "rag" && (
+                  <div class="flow-diagram">
+                    <div class="flow-node">QUERY</div>
+
+                    <div class="flow-arrow">→</div>
+
+                    <div class="flow-node">VECTOR DB</div>
+
+                    <div class="flow-arrow">→</div>
+
+                    <div class="flow-node">LLM</div>
+                  </div>
+                )}
+
+                {featured.data.visual === "moe" && (
+                  <div class="moe-diagram">
+                    <div class="moe-input">INPUT</div>
+
+                    <div class="moe-router">ROUTER</div>
+
+                    <div class="experts">
+                      <div class="expert">E1</div>
+
+                      <div class="expert">E2</div>
+
+                      <div class="expert">E3</div>
+
+                      <div class="expert">E4</div>
+                    </div>
+
+                    <div class="moe-output">OUTPUT</div>
+                  </div>
+                )}
+
+                {featured.data.visual === "research" && (
+                  <div class="research-diagram">
+                    <div class="research-step">
+                      <span>01</span>
+                      <strong>PROBLEM</strong>
+                    </div>
+
+                    <div class="research-line" />
+
+                    <div class="research-step">
+                      <span>02</span>
+                      <strong>METHOD</strong>
+                    </div>
+
+                    <div class="research-line" />
+
+                    <div class="research-step">
+                      <span>03</span>
+                      <strong>RESULT</strong>
+                    </div>
+                  </div>
+                )}
+
+                {featured.data.visual === "career" && (
+                  <div class="career-diagram">
+                    <div class="career-center">DATA</div>
+
+                    <div class="career-path career-one">RESEARCH</div>
+
+                    <div class="career-path career-two">ENGINEERING</div>
+
+                    <div class="career-path career-three">PRODUCT</div>
+                  </div>
+                )}
               </div>
             </section>
           </a>
@@ -492,29 +845,30 @@ const formattedDate = featured
       <section class="sections">
         <div class="sections-title">
           <h2>Explore EWHA DS</h2>
-          <span>TECH · RESEARCH · CAREER</span>
+
+          <span> TECH · RESEARCH · CAREER </span>
         </div>
 
         <div class="cards">
-          {sections.map((section) => (
-            <article class="card">
-              <div class="card-label">{section.label}</div>
+          {
+            sections.map((section) => (
+              <a href={section.href} class="card">
+                <div class="card-label">{section.label}</div>
 
-              <div>
-                <h3>{section.title}</h3>
-                <p>{section.desc}</p>
-              </div>
+                <div>
+                  <h3>{section.title}</h3>
 
-              <div class="card-arrow">↗</div>
-            </article>
-          ))}
+                  <p>{section.desc}</p>
+                </div>
+
+                <div class="card-arrow">↗</div>
+              </a>
+            ))
+          }
         </div>
       </section>
 
-      <footer class="footer" id="about">
-        <span>EWHA DS</span>
-        <span>© 2026 · TECH · RESEARCH · CAREER</span>
-      </footer>
+      <Footer />
     </main>
   </body>
 </html>

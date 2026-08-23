@@ -1,7 +1,17 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
 
-// https://astro.build/config
+import { defineConfig } from "astro/config";
+import { unified } from "@astrojs/markdown-remark";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+
 export default defineConfig({
-    site: 'https://ewha-ds.github.io',
+  site: "https://ewha-ds.github.io",
+
+  markdown: {
+    processor: unified({
+      remarkPlugins: [remarkMath],
+      rehypePlugins: [rehypeKatex],
+    }),
+  },
 });
