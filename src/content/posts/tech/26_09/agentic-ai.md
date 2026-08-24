@@ -1,4 +1,4 @@
-------------
+---
 title: "AGENTIC AI"
 subtitle: "챗봇을 넘어, 직접 행동하는 AI"
 category: "TECH"
@@ -7,7 +7,7 @@ date: 2026-09-02
 description: "AI Agent가 목표를 이해하고 도구를 사용해 작업을 수행하는 방식과 Agentic AI의 핵심 구조를 살펴봅니다."
 visual: "26_09_agent"
 draft: false
-------------
+---
 
 ## 들어가며
 
