@@ -11,7 +11,7 @@ interface Props {
 const {
   title,
   description = "EWHA DS · Tech · Research · Career",
-  image = "/ewha-logo.png",
+  image = "/default-og.png",
   type = "website",
   publishedTime,
   author,
@@ -32,6 +32,11 @@ const imageURL = Astro.site
 
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalURL} />
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="/eds-favicon.png" />
+<link rel="shortcut icon" href="/eds-favicon.png" />
+<link rel="apple-touch-icon" href="/eds-favicon.png" />
 
 <!-- Open Graph -->
 <meta property="og:site_name" content={siteName} />
