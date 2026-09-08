@@ -320,6 +320,180 @@ const formattedDate = featured
       }
 
       /* =========================
+         ABOUT
+      ========================= */
+
+      .about {
+        padding: 48px 0 0;
+
+        border-top: 1px solid var(--line);
+
+        scroll-margin-top: 24px;
+      }
+
+      .about-label {
+        margin-bottom: 64px;
+
+        color: var(--green);
+
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+      }
+
+      .about-grid {
+        display: grid;
+
+        grid-template-columns:
+          minmax(0, 1.35fr)
+          minmax(280px, 0.65fr);
+
+        gap: 100px;
+
+        padding-bottom: 88px;
+      }
+
+      .about-main h2 {
+        max-width: 900px;
+
+        margin: 0 0 48px;
+
+        font-size: clamp(54px, 6.5vw, 94px);
+        font-weight: 800;
+
+        line-height: 0.92;
+        letter-spacing: -0.065em;
+      }
+
+      .about-description {
+        max-width: 650px;
+      }
+
+      .about-description p {
+        margin: 0 0 18px;
+
+        color: var(--muted);
+
+        font-size: 17px;
+        line-height: 1.8;
+        letter-spacing: -0.015em;
+      }
+
+      .about-description p:last-child {
+        margin-bottom: 0;
+      }
+
+      .about-side {
+        padding-top: 8px;
+      }
+
+      .about-block + .about-block {
+        margin-top: 52px;
+      }
+
+      .about-small-label {
+        margin-bottom: 18px;
+
+        color: var(--green);
+
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+      }
+
+      .about-info {
+        display: flex;
+        flex-direction: column;
+
+        gap: 5px;
+
+        font-size: 13px;
+        font-weight: 650;
+        line-height: 1.65;
+        letter-spacing: 0.025em;
+      }
+
+      .about-links {
+        display: flex;
+        flex-direction: column;
+
+        border-top: 1px solid var(--line);
+      }
+
+      .about-links a {
+        display: flex;
+
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 24px;
+
+        padding: 14px 0;
+
+        border-bottom: 1px solid var(--line);
+
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.025em;
+
+        transition:
+          color 160ms ease,
+          padding-left 160ms ease;
+      }
+
+      .about-links a:hover {
+        padding-left: 4px;
+
+        color: var(--green);
+      }
+
+      .about-arrow {
+        color: var(--green);
+
+        font-size: 14px;
+      }
+
+      .about-contact {
+        display: flex;
+        flex-direction: column;
+
+        gap: 9px;
+      }
+
+      .about-contact span {
+        color: var(--muted);
+
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+      }
+
+      .about-contact strong {
+        font-size: 13px;
+        font-weight: 650;
+        letter-spacing: 0.01em;
+      }
+
+      .about-bottom {
+        display: flex;
+
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 24px;
+
+        padding: 22px 0;
+
+        border-top: 1px solid var(--line);
+
+        color: var(--muted);
+
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+      }
+
+      /* =========================
          MOBILE
       ========================= */
 
@@ -359,6 +533,48 @@ const formattedDate = featured
 
         .sections-title h2 {
           font-size: 42px;
+        }
+
+        .about {
+          padding-top: 36px;
+        }
+
+        .about-label {
+          margin-bottom: 42px;
+        }
+
+        .about-grid {
+          grid-template-columns: 1fr;
+
+          gap: 58px;
+
+          padding-bottom: 64px;
+        }
+
+        .about-main h2 {
+          margin-bottom: 34px;
+
+          font-size: clamp(46px, 13vw, 72px);
+        }
+
+        .about-description p {
+          font-size: 16px;
+        }
+
+        .about-side {
+          padding-top: 0;
+        }
+
+        .about-block + .about-block {
+          margin-top: 42px;
+        }
+
+        .about-bottom {
+          flex-direction: column;
+
+          align-items: flex-start;
+
+          gap: 8px;
         }
       }
     </style>
@@ -497,6 +713,113 @@ const formattedDate = featured
               </a>
             ))
           }
+        </div>
+      </section>
+
+      <section
+        class="about"
+        id="about"
+      >
+        <div class="about-label">
+          ABOUT EWHA DS
+        </div>
+
+        <div class="about-grid">
+          <div class="about-main">
+            <h2>
+              DATA, RESEARCH,<br />
+              AND WHAT COMES NEXT.
+            </h2>
+
+            <div class="about-description">
+              <p>
+                EWHA DS는 이화여자대학교 데이터사이언스전공 제4대 학생회
+                피움이 운영하는 학술·진로 콘텐츠 아카이브입니다.
+              </p>
+
+              <p>
+                빠르게 변화하는 데이터와 AI 기술부터 연구와 진로에 관한
+                이야기까지, 학부생의 시선에서 기록하고 오래 남길 수 있는
+                형태로 쌓아갑니다.
+              </p>
+            </div>
+          </div>
+
+          <div class="about-side">
+            <div class="about-block">
+              <div class="about-small-label">
+                OPERATED BY
+              </div>
+
+              <div class="about-info">
+                <span>EWHA WOMANS UNIVERSITY</span>
+                <span>DATA SCIENCE</span>
+                <span>4TH STUDENT COUNCIL PIUM</span>
+              </div>
+            </div>
+
+            <div class="about-block">
+              <div class="about-small-label">
+                RELATED
+              </div>
+
+              <div class="about-links">
+                <a
+                  href="https://cmsfox.ewha.ac.kr/datascience/index.do"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>
+                    DEPARTMENT WEBSITE
+                  </span>
+
+                  <span class="about-arrow">
+                    ↗
+                  </span>
+                </a>
+
+                <a
+                  href="https://www.instagram.com/ewha_data/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>
+                    STUDENT COUNCIL INSTAGRAM
+                  </span>
+
+                  <span class="about-arrow">
+                    ↗
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            <div class="about-block">
+              <div class="about-small-label">
+                CONTACT
+              </div>
+
+              <div class="about-contact">
+                <span>
+                  CONTENT · ARCHIVE · INQUIRY
+                </span>
+
+                <strong>
+                  dsbloom2026 [at] gmail [dot] com
+                </strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-bottom">
+          <span>
+            ARCHIVE SINCE 2026
+          </span>
+
+          <span>
+            © 2026 EWHA DS · Built by Minseon Son
+          </span>
         </div>
       </section>
 
