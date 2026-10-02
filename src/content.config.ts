@@ -12,6 +12,10 @@ const posts = defineCollection({
     title: z.string(),
     subtitle: z.string(),
 
+    // CMS가 파일 이름(=글 주소)을 만들 때 쓰는 값. 사이트 렌더링에는 사용하지 않음.
+    // 주의: 이름을 slug로 바꾸면 Astro가 글 id로 사용해 URL 구조가 바뀜.
+    urlKey: z.string().optional(),
+
     category: z.enum([
       "TECH",
       "RESEARCH",
@@ -29,7 +33,8 @@ const posts = defineCollection({
 
     visual: z.string().optional(),
 
-    draft: z.boolean().default(false),
+    // 빠뜨리면 비공개. 공개하려면 draft: false 를 명시해야 함.
+    draft: z.boolean().default(true),
   }),
 });
 

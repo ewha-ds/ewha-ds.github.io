@@ -1,0 +1,192 @@
+# ==================================================
+# EWHA DS · Pages CMS 설정
+# 관리 화면: https://app.pagescms.org
+#
+# 이 파일은 CMS 입력 화면을 정의합니다.
+# 필드를 바꿀 때는 src/content.config.ts 스키마와 반드시 함께 맞춰주세요.
+# ==================================================
+
+settings:
+  commit:
+    # 편집자(이메일 초대)가 저장해도 커밋에 그 사람 이름·이메일이 남도록
+    identity: user
+
+media:
+  input: public/images
+  output: /images
+  # 같은 이름 파일이 기존 이미지를 덮어쓰지 않도록 무작위 이름 사용
+  rename: random
+  extensions: [png, jpg, jpeg, webp, gif, svg]
+
+components:
+  title:
+    type: string
+    label: 제목
+    required: true
+    description: '예: AGENTIC AI'
+
+  subtitle:
+    type: string
+    label: 부제 (한 줄 설명)
+    required: true
+    description: '제목 아래와 목록 카드에 표시됩니다. 예: 챗봇을 넘어, 직접 행동하는 AI'
+
+
+  urlKey:
+    type: string
+    label: 글 주소 (영문)
+    required: true
+    pattern:
+      regex: '^[a-z0-9]+(-[a-z0-9]+)*$'
+      message: '영문 소문자, 숫자, 하이픈(-)만 사용할 수 있습니다. 예: attention-mechanism'
+    description: '글 주소가 됩니다. 예: attention-mechanism → /posts/tech/attention-mechanism/ ⚠ 처음 저장할 때만 적용되고 CMS에서는 나중에 바꿀 수 없으니 저장 전에 꼭 확인하세요.'
+
+  author:
+    type: string
+    label: 작성자
+    required: true
+    description: '예: Minseon Son'
+
+  date:
+    type: date
+    label: 게시 시각
+    required: true
+    description: '기본값은 지금입니다. 미래 시각으로 정하고 임시저장을 끄면 그 시각에 자동 공개됩니다 (약 1시간 이내, 한국 시간 기준).'
+    options:
+      time: true
+      # 초(:ss)나 시간대(+09:00)를 붙이지 말 것. 빌드 환경의 TZ=Asia/Seoul 로 한국 시간 해석.
+      format: "yyyy-MM-dd'T'HH:mm"
+
+  draft:
+    type: boolean
+    label: 임시저장
+    default: true
+    description: '켜져 있으면 사이트에 보이지 않습니다. 공개(또는 예약)하려면 끄고 저장하세요. (저장소는 공개라 파일 자체는 GitHub에서 보입니다)'
+
+  authorUrl:
+    type: string
+    label: 작성자 링크 (선택)
+    pattern:
+      regex: '^https?://.+'
+      message: 'https:// 로 시작하는 전체 주소를 입력하세요.'
+    description: 'GitHub나 개인 홈페이지. 없으면 비워두세요.'
+
+  description:
+    type: text
+    label: 검색용 요약 (선택)
+    description: '검색 결과·링크 공유 시 설명. 비우면 부제가 대신 사용됩니다.'
+
+  ogImage:
+    type: image
+    label: 링크 공유 이미지 (선택)
+    description: '카카오톡·SNS 공유 시 보이는 이미지. 비우면 기본 이미지가 사용됩니다.'
+
+  visual:
+    type: select
+    label: 홈 대표 도식 (선택)
+    description: '홈 화면 최신 글 옆에 표시됩니다. 비워도 됩니다. 새 도식 추가는 개발 작업입니다 (README 참고).'
+    options:
+      placeholder: 선택 안 함
+      values:
+        - { name: 26_09_agent, label: 'AGENTIC AI (26.09)' }
+        - { name: 26_09_rag, label: 'RAG (26.09)' }
+        - { name: 26_09_moe, label: 'MoE (26.09)' }
+        - { name: research, label: 'RESEARCH 공통' }
+        - { name: career, label: 'CAREER 공통' }
+
+  body:
+    type: rich-text
+    label: 본문
+    required: true
+    description: '서식 버튼으로 작성합니다. 오른쪽 위 Source로 바꾸면 Markdown을 직접 볼 수 있습니다. 수식은 Source 모드에서 입력하세요.'
+    options:
+      format: markdown
+      switcher: true
+      rename: random
+      extensions: [png, jpg, jpeg, webp, gif]
+
+# 세 카테고리는 category 값과 저장 폴더만 다르고 나머지는 동일합니다.
+content:
+  - name: tech
+    label: TECH
+    type: collection
+    path: src/content/posts/tech
+    filename: '{fields.urlKey}.md'
+    operations: { delete: false, rename: false }
+    view:
+      fields: [title, author, date, draft]
+      primary: title
+      search: [title, subtitle, author]
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - { name: category, type: string, hidden: true, default: TECH }
+      - { name: title, component: title }
+      - { name: subtitle, component: subtitle }
+      - { name: urlKey, component: urlKey }
+      - { name: author, component: author }
+      - { name: date, component: date }
+      - { name: draft, component: draft }
+      - { name: authorUrl, component: authorUrl }
+      - { name: description, component: description }
+      - { name: ogImage, component: ogImage }
+      - { name: visual, component: visual }
+      - { name: body, component: body }
+
+  - name: research
+    label: RESEARCH
+    type: collection
+    path: src/content/posts/research
+    filename: '{fields.urlKey}.md'
+    operations: { delete: false, rename: false }
+    view:
+      fields: [title, author, date, draft]
+      primary: title
+      search: [title, subtitle, author]
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - { name: category, type: string, hidden: true, default: RESEARCH }
+      - { name: title, component: title }
+      - { name: subtitle, component: subtitle }
+      - { name: urlKey, component: urlKey }
+      - { name: author, component: author }
+      - { name: date, component: date }
+      - { name: draft, component: draft }
+      - { name: authorUrl, component: authorUrl }
+      - { name: description, component: description }
+      - { name: ogImage, component: ogImage }
+      - { name: visual, component: visual }
+      - { name: body, component: body }
+
+  - name: career
+    label: CAREER
+    type: collection
+    path: src/content/posts/career
+    filename: '{fields.urlKey}.md'
+    operations: { delete: false, rename: false }
+    view:
+      fields: [title, author, date, draft]
+      primary: title
+      search: [title, subtitle, author]
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - { name: category, type: string, hidden: true, default: CAREER }
+      - { name: title, component: title }
+      - { name: subtitle, component: subtitle }
+      - { name: urlKey, component: urlKey }
+      - { name: author, component: author }
+      - { name: date, component: date }
+      - { name: draft, component: draft }
+      - { name: authorUrl, component: authorUrl }
+      - { name: description, component: description }
+      - { name: ogImage, component: ogImage }
+      - { name: visual, component: visual }
+      - { name: body, component: body }

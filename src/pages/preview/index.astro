@@ -1,0 +1,75 @@
+---
+import { getCollection } from "astro:content";
+import { isPreviewOnly, isScheduled, previewStatus, formatDateTime } from "../../lib/posts";
+
+// 임시저장 글 목록. 사이트 메뉴에는 없고, 주소를 아는 사람만 들어옵니다.
+const drafts = (await getCollection("posts"))
+  .filter(isPreviewOnly)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+---
+
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>미리보기 | EWHA DS</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 48px 20px;
+        background: #fafbf9;
+        color: #171a19;
+        font-family: system-ui, -apple-system, "Apple SD Gothic Neo", sans-serif;
+      }
+      main { max-width: 720px; margin: 0 auto; }
+      h1 { font-size: 22px; margin: 0 0 6px; }
+      p.note { color: #707674; font-size: 14px; margin: 0 0 32px; }
+      a.item {
+        display: block;
+        padding: 18px 0;
+        border-top: 1px solid #dce4e1;
+        color: inherit;
+        text-decoration: none;
+      }
+      a.item:hover .title { color: #00664f; }
+      .meta { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: #707674; }
+      .title { font-size: 18px; font-weight: 700; margin: 4px 0 2px; }
+      .sub { font-size: 14px; color: #707674; }
+      .tag {
+        display: inline-block;
+        margin-right: 6px;
+        padding: 2px 6px;
+        border-radius: 3px;
+        background: #dce4e1;
+        color: #171a19;
+      }
+      .tag.scheduled { background: #00664f; color: #fff; }
+      .empty { color: #707674; padding: 18px 0; border-top: 1px solid #dce4e1; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>미리보기</h1>
+      <p class="note">
+        아직 공개되지 않은 글(임시저장·예약)이 사이트에서 어떻게 보이는지 확인하는 곳입니다.
+        저장 후 2~3분 뒤 새로고침하세요.
+      </p>
+
+      {
+        drafts.length === 0 ? (
+          <div class="empty">공개 전인 글이 없습니다.</div>
+        ) : (
+          drafts.map((post) => (
+            <a class="item" href={`/preview/${post.id}/`}>
+              <div class="meta"><span class={isScheduled(post) ? "tag scheduled" : "tag"}>{previewStatus(post)}</span> {post.data.category} · {formatDateTime(post.data.date)} · {post.data.author}</div>
+              <div class="title">{post.data.title}</div>
+              <div class="sub">{post.data.subtitle}</div>
+            </a>
+          ))
+        )
+      }
+    </main>
+  </body>
+</html>

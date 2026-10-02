@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import { isPreviewOnly, isScheduled, formatDateTime } from "../../lib/posts";
+import ArticlePage from "../../components/ArticlePage.astro";
+
+// 임시저장·예약 글 미리보기. 사이트 어디에도 링크되지 않고 검색엔진 수집을 막습니다.
+export async function getStaticPaths() {
+  const drafts = (await getCollection("posts"))
+    .filter(isPreviewOnly);
+
+  return drafts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+---
+
+<ArticlePage
+  post={post}
+  preview={
+    isScheduled(post)
+      ? `예약 글 · ${formatDateTime(post.data.date)}에 자동 공개됩니다 (약 1시간 이내)`
+      : "임시저장 글 · 사이트 목록에는 보이지 않습니다"
+  }
+/>

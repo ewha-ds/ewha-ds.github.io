@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # 예약 글 공개: 매시간 다시 빌드해 게시 시각이 지난 글을 공개 (src/lib/posts.ts)
+  # 정각은 GitHub 부하가 커서 지연이 잦으므로 7분에 실행
+  schedule:
+    - cron: "7 * * * *"
 
 permissions:
   contents: read
@@ -32,6 +36,9 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          # 게시 시각을 한국 시간으로 해석 (없으면 UTC로 해석되어 9시간 늦게 공개됨)
+          TZ: Asia/Seoul
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
