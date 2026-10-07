@@ -51,7 +51,7 @@ components:
     type: date
     label: 게시 시각
     required: true
-    description: '기본값은 지금입니다. 미래 시각으로 정하고 임시저장을 끄면 그 시각에 자동 공개됩니다 (약 1시간 이내, 한국 시간 기준).'
+    description: '기본값은 지금입니다(한국 시간). 미래 시각으로 정하고 임시저장을 끄면 자동 공개됩니다. 사이트는 매시 7분에 갱신되므로 예약 시각 직후가 아니라 다음 7분에 올라갑니다.'
     options:
       time: true
       # 초(:ss)나 시간대(+09:00)를 붙이지 말 것. 빌드 환경의 TZ=Asia/Seoul 로 한국 시간 해석.
@@ -118,7 +118,7 @@ content:
     type: collection
     path: src/content/posts/tech
     filename: '{fields.urlKey}.md'
-    operations: { delete: false, rename: false }
+    operations: { delete: true, rename: false }
     view:
       fields: [title, author, date, draft]
       primary: title
@@ -147,7 +147,7 @@ content:
     type: collection
     path: src/content/posts/research
     filename: '{fields.urlKey}.md'
-    operations: { delete: false, rename: false }
+    operations: { delete: true, rename: false }
     view:
       fields: [title, author, date, draft]
       primary: title
@@ -176,7 +176,7 @@ content:
     type: collection
     path: src/content/posts/career
     filename: '{fields.urlKey}.md'
-    operations: { delete: false, rename: false }
+    operations: { delete: true, rename: false }
     view:
       fields: [title, author, date, draft]
       primary: title

@@ -82,9 +82,15 @@ npm run build
 
 Node 22 이상 (`package.json` engines, 워크플로우도 Node 22).
 
+## 빌드 캐시
+
+`deploy.yml`에서 npm 캐시를 사용합니다. 드물게 "로컬 빌드는 되는데 Actions만 실패"하면 캐시가 원인일 수 있습니다.
+저장소 **Actions → Caches**에서 캐시를 삭제하고 워크플로우를 다시 실행하세요.
+
 ## 연 1회 점검
 
 - [ ] `npm run build`가 로컬에서 통과하는지
+- [ ] 배포 시간이 3분을 넘기지 않는지 (넘기면 빌드 최적화 검토)
 - [ ] Actions의 Node 버전·액션 버전(`checkout`, `setup-node`, `upload-pages-artifact`, `deploy-pages`) 지원 종료 공지 확인
 - [ ] 빌드가 깨져도 기존 배포본은 계속 서비스되므로, 급하게 고치지 말고 원인 확인 후 수정
 
@@ -117,7 +123,7 @@ Node 22 이상 (`package.json` engines, 워크플로우도 Node 22).
 | 공개 여부 | `draft` 불리언. 새 글 기본값 `true` (스키마 기본값도 true). 미래 `date` + `draft: false` = 예약 |
 | 본문 | 일반 Markdown. 수식은 `$...$`, `$$...$$` |
 | 이미지 | 저장 `public/images/`, 본문 경로 `/images/파일명`, 파일명 무작위 |
-| 금지 | 글 삭제·이름 변경은 CMS에서 막기. frontmatter 키 이름으로 `slug` 사용 금지(Astro가 id로 사용해 URL이 바뀜) |
+| 금지 | 글 이름 변경은 CMS에서 막기(URL이 바뀜). frontmatter 키 이름으로 `slug` 사용 금지(Astro가 id로 사용해 URL이 바뀜) |
 
 ### 선택지 (권장 순)
 
