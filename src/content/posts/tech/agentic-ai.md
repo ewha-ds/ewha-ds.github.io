@@ -8,6 +8,7 @@ date: 2026-09-18T17:30
 draft: false
 description: AI Agent가 목표를 이해하고 도구를 사용해 작업을 수행하는 방식과 Agentic AI의 핵심 구조를 살펴봅니다.
 visual: 26_09_agent
+homeImage: /images/muxugiry-l58ffy3l.png
 ---
 ### 들어가며
 
