@@ -1,9 +1,13 @@
 ---
 interface Props {
   type?: string;
+  /** 도식(type)이 없을 때 대신 보여줄 이미지 경로 */
+  image?: string;
+  /** 이미지 대체 텍스트 */
+  imageAlt?: string;
 }
 
-const { type } = Astro.props;
+const { type, image, imageAlt } = Astro.props;
 
 /*
   visuals 아래의 모든 *Visual.astro 파일을 자동 탐색합니다.
@@ -64,6 +68,8 @@ const VisualComponent =
   {
     VisualComponent ? (
       <VisualComponent />
+    ) : image ? (
+      <img class="visual-image" src={image} alt={imageAlt ?? ""} />
     ) : (
       <div class="visual-fallback">
         <span>EWHA DS</span>
@@ -100,6 +106,16 @@ const VisualComponent =
       );
 
     background-size: 48px 48px;
+  }
+
+  /* 잘리지 않게 영역 안에 맞추고, 남는 공간은 초록 배경이 채움 */
+  .visual-image {
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+    object-fit: contain;
+    padding: 32px;
+    box-sizing: border-box;
   }
 
   .visual-fallback {

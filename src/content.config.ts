@@ -33,6 +33,9 @@ const posts = defineCollection({
 
     visual: z.string().optional(),
 
+    // 홈 대표 이미지. visual(도식)이 없을 때 그 자리에 들어감.
+    homeImage: z.string().optional(),
+
     // 빠뜨리면 비공개. 공개하려면 draft: false 를 명시해야 함.
     draft: z.boolean().default(true),
   }),

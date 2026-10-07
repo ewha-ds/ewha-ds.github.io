@@ -95,6 +95,11 @@ components:
         - { name: research, label: 'RESEARCH 공통' }
         - { name: career, label: 'CAREER 공통' }
 
+  homeImage:
+    type: image
+    label: 홈 대표 이미지 (선택)
+    description: '홈 화면 최신 글 옆에 들어갑니다. 위의 도식을 고르면 그쪽이 우선합니다. 정사각형에 가깝게(긴 변 1200px 정도), 배경 투명 PNG, 밝은 색 위주로 만들어주세요. 진한 초록 위에 올라갑니다.'
+
   body:
     type: rich-text
     label: 본문
@@ -134,6 +139,7 @@ content:
       - { name: description, component: description }
       - { name: ogImage, component: ogImage }
       - { name: visual, component: visual }
+      - { name: homeImage, component: homeImage }
       - { name: body, component: body }
 
   - name: research
@@ -162,6 +168,7 @@ content:
       - { name: description, component: description }
       - { name: ogImage, component: ogImage }
       - { name: visual, component: visual }
+      - { name: homeImage, component: homeImage }
       - { name: body, component: body }
 
   - name: career
@@ -190,4 +197,5 @@ content:
       - { name: description, component: description }
       - { name: ogImage, component: ogImage }
       - { name: visual, component: visual }
+      - { name: homeImage, component: homeImage }
       - { name: body, component: body }
