@@ -27,7 +27,7 @@ draft: false
 
 이 질문에서 출발한 것이 바로 연합학습입니다.
 
-![그림 1. 기존의 centralized learning과 federated learning의 차이](/images/26_09/agentic-ai/anthropic-prompt-chaining.png)
+![그림 1. 기존의 centralized learning과 federated learning의 차이](public/images/federated-learning/image1.png)
 
 *그림 1. 기존의 centralized learning과 federated learning의 차이 (출처 : Federated Learning, Dataflow, https://jaehong-data.tistory.com/79)*
 
@@ -60,7 +60,7 @@ draft: false
 
 연합학습의 가장 기본이 되는 알고리즘은 **연합 평균(Federated Averaging, FedAvg)** 입니다. FedAvg는 '라운드'라는 단위를 반복하며 학습을 진행하는데, 한 라운드는 다음의 다섯 단계로 이루어집니다.
 
-![그림2](/images/26_09/federated-learning/image2.png)
+![그림2](public/images/federated-learning/image2.png)
 *그림2. 알고리즘의 슈도 코드. ( 출처 : Communication-Efficient Learning of Deep Networks
 from Decentralized Data, McMahan et al.,2017 )*
 
@@ -81,7 +81,7 @@ FedAvg의 핵심 아이디어는 **통신은 적게, 계산은 로컬에서 많�
 중앙집중식 학습에서는 데이터를 골고루 섞을 수 있어서, 무작위로 뽑은 일부 데이터도 전체의 특징을 잘 대표합니다. 연합학습에서는 이 전제가 깨집니다. 한 사람의 키보드 입력에는 그 사람만의 말투가 담기고, 한 병원의 환자 구성은 지역이나 전문 진료과에 따라 치우칩니다. 이렇게 참여자마다 데이터 분포가 서로 다른 상황을 **Non-IID**(독립적이고 동일한 분포를 따르지 않음)라고 부르며, 연합학습의 가장 근본적인 난제로 꼽힙니다.
 
 
-![그림3](/images/26_09/federated-learning/image3.png)
+![그림3](public/images/federated-learning/image3.png)
 *그림3. Non-IID 데이터 분포와 클라이언트 드리프트 개념도, 출처 : Anthropic*
 
 로컬 학습을 여러 번 반복할수록 각 클라이언트의 모델은 자기 데이터에 맞는 방향으로 끌려가고, 이를 평균한 업데이트는 모두에게 좋은 방향(점선)에서 벗어나게 됩니다.
@@ -96,7 +96,7 @@ FedAvg의 핵심 아이디어는 **통신은 적게, 계산은 로컬에서 많�
 
 연합학습에 대한 가장 흔한 오해는 원본 데이터를 보내지 않으니 개인정보가 자동으로 보호된다는 생각입니다. 하지만 모델 업데이트에도 학습 데이터에 대한 정보가 녹아 있습니다. Zhu 등은 **공유된 경사(gradient) 정보만으로 원본 이미지를 픽셀 단위로, 텍스트를 토큰 단위로 복원할 수 있음**을 보여 큰 주목을 받았고, Geiping 등은 보다 현실적인 조건에서도 이러한 복원 공격이 가능함을 확인했습니다.
 
-![그림4](/images/26_09/federated-learning/image4.png)
+![그림4](public/images/federated-learningg/image4.png)
 *그림 4. 연합학습에 보안 집계와 차등 프라이버시를 결합한 다층 보호 구조, 출처 : Anthropic*
 
 그래서 실제 서비스에서는 연합학습에 보안 집계, 차등 프라이버시 등 여러 겹의 **보호 장치**를 더합니다. 그러나 노이즈를 많이 넣을수록 개인정보 보호는 강해지지만 모델의 정확도는 떨어집니다. 또 악의적인 참여자가 조작된 업데이트를 보내 모델을 오염시키는 **중독(poisoning) 공격**도 있는데, 보안 집계로 개별 업데이트를 볼 수 없게 되면 이런 공격을 찾아내기가 오히려 어려워집니다.
