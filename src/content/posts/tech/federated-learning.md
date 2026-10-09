@@ -27,7 +27,8 @@ draft: false
 
 이 질문에서 출발한 것이 바로 연합학습입니다.
 
-![그림 1. 기존의 centralized learning과 federated learning의 차이](public/images/federated-learning/image1-1.png)![](public/images/federated-learning/image1-2.png)
+![그림 1. 기존의 centralized learning과 federated learning의 차이](public/images/federated-learning/image1-1.png)
+![](public/images/federated-learning/image1-2.png)
 
 *그림 1. 기존의 centralized learning과 federated learning의 차이 (출처 : Federated Learning, Dataflow, https://jaehong-data.tistory.com/79)*
 
@@ -60,7 +61,7 @@ draft: false
 
 연합학습의 가장 기본이 되는 알고리즘은 **연합 평균(Federated Averaging, FedAvg)** 입니다. FedAvg는 '라운드'라는 단위를 반복하며 학습을 진행하는데, 한 라운드는 다음의 다섯 단계로 이루어집니다.
 
-![그림2]((public/images/federated-learning/image2.png))
+![그림2]((public/images/fl_2.png))
 *그림2. 알고리즘의 슈도 코드. ( 출처 : Communication-Efficient Learning of Deep Networks
 from Decentralized Data, McMahan et al.,2017 )*
 
