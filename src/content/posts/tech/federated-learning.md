@@ -9,15 +9,6 @@ draft: false
 ---
 ---
 
-title: "Federated Learning"
-subtitle: "민감한 정보를 지키며 협력하는 AI"
-category: "TECH"
-author: "Seoyeon Jang"
-date: 2026-10-08
-description: "연합 학습의 제안 배경, 개념, 실제 활용 사례를 살펴봅니다."
-visual: "26_10_FL"
-draft: false
-
 ---
 
 ### 들어가며
