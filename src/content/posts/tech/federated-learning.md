@@ -10,7 +10,7 @@ draft: true
 ---
 
 title: "Federated Learning"
-subtitle: "개인정보를 지키며 협력하는 AI"
+subtitle: "민감한 정보를 지키며 협력하는 AI"
 category: "TECH"
 author: "Seoyeon Jang"
 date: 2026-10-08
