@@ -5,7 +5,7 @@ subtitle: 민감한 정보를 지키며 협력하는 AI
 urlKey: federated-learning
 author: Seoyeon Jang
 date: 2026-10-12T21:22
-draft: true
+draft: false
 ---
 ---
 
