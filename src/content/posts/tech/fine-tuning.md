@@ -5,7 +5,7 @@ subtitle: 모두를 위한 AI를 넘어, 나를 위한 AI로
 urlKey: fine-tuning
 author: Yujin Shin
 date: 2026-10-20T18:57
-draft: false
+draft: true
 ---
 ### 들어가며
 
