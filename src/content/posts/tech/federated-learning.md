@@ -1,7 +1,7 @@
 ---
 category: TECH
 title: Federated Learning - 연합학습
-subtitle: 민감한 정보를 지키며 협력하는 AI
+subtitle: 민감한 개인정보를 지키며 협력하는 AI
 urlKey: federated-learning
 author: Seoyeon Jang
 date: 2026-11-09T21:22
