@@ -4,7 +4,7 @@ title: Federated Learning - 연합학습
 subtitle: 민감한 개인정보를 지키며 협력하는 AI
 urlKey: federated-learning
 author: Seoyeon Jang
-date: 2026-11-09T21:22
+date: 2026-11-09T15:00
 draft: false
 homeImage: /images/mw8ui2bn-9qk1x6qo.png
 ---
