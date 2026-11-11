@@ -1,6 +1,6 @@
 ---
 category: CAREER
-title: 데이터사이언스학과 김동일 교수님을 소개합니다!
+title: 데이터사이언스전공 김동일 교수님을 소개합니다!
 subtitle: 데이터사이언스학과의 든든한 길잡이, 김동일 교수님을 만나다
 urlKey: dsprofessor-kimdongil
 author: Seeun Jung
