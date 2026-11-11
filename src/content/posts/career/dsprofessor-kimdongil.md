@@ -1,7 +1,7 @@
 ---
 category: CAREER
 title: 데이터사이언스전공 김동일 교수님을 소개합니다!
-subtitle: 데이터사이언스학과의 든든한 길잡이, 김동일 교수님을 만나다
+subtitle: 데이터사이언스전공의 든든한 길잡이, 김동일 교수님을 만나다
 urlKey: dsprofessor-kimdongil
 author: Seeun Jung
 date: 2026-11-11T01:39
@@ -9,7 +9,7 @@ draft: true
 visual: career
 homeImage: /images/mwaxd22w-989urn98.png
 ---
-# [교수님 인터뷰] 데이터사이언스학과 김동일 교수님을 소개합니다!
+# [교수님 인터뷰] 데이터사이언스전공 김동일 교수님을 소개합니다!
 
 - **소속:** 이화여자대학교 데이터사이언스전공
 - **전화:** 02-3277-4070
