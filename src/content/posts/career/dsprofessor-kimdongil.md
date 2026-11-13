@@ -5,7 +5,7 @@ subtitle: 데이터사이언스전공의 든든한 길잡이, 김동일 교수�
 urlKey: dsprofessor-kimdongil
 author: Seeun Jung
 date: 2026-11-11T01:39
-draft: true
+draft: false
 visual: career
 homeImage: /images/mwaxd22w-989urn98.png
 ---
