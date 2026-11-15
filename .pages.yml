@@ -104,7 +104,7 @@ components:
     type: rich-text
     label: 본문
     required: true
-    description: '빈 줄에서 / 를 누르면 제목·목록·이미지·표 메뉴가 나옵니다. 오른쪽 목차는 굵은 글씨가 아니라 제목(Heading 2)으로 만든 줄로 생깁니다. 글자를 드래그하면 굵게·기울임 메뉴가 뜹니다. 수식은 오른쪽 위 Source 모드에서 입력하세요.'
+    description: '빈 줄에서 / 를 누르면 제목·목록·이미지·표 메뉴가 나옵니다. 오른쪽 목차는 굵은 글씨가 아니라 제목(Heading 2)으로 만든 줄로 생깁니다. 인터뷰 질문 같은 초록 강조 박스는 Source 모드에서 줄 앞에 #### 를 붙이세요(꼬리 질문은 #####). 글자를 드래그하면 굵게·기울임 메뉴가 뜹니다. 수식은 오른쪽 위 Source 모드에서 입력하세요.'
     options:
       format: markdown
       switcher: true

@@ -272,15 +272,35 @@ const activeCategory =
         letter-spacing: -0.03em;
       }
 
+      /* ####: 강조 박스 (인터뷰 질문 등). CMS에서는 Source 모드로 줄 앞에 '#### ' 입력 */
       .article-content :global(h4) {
         scroll-margin-top: 40px;
-        margin: 40px 0 14px;
+        margin: 64px 0 22px;
+        padding: 18px 22px;
+
+        background: var(--green-light);
+        border-left: 4px solid var(--green);
+
         font-size: 19px;
-        line-height: 1.4;
+        line-height: 1.55;
         letter-spacing: -0.02em;
+        word-break: keep-all;
       }
 
-      .article-content :global(h5),
+      /* #####: 보조 강조 (꼬리 질문 등). 초록 선만 */
+      .article-content :global(h5) {
+        scroll-margin-top: 40px;
+        margin: 44px 0 16px;
+        padding: 2px 0 2px 16px;
+
+        border-left: 3px solid var(--green);
+
+        font-size: 17px;
+        line-height: 1.55;
+        letter-spacing: -0.01em;
+        word-break: keep-all;
+      }
+
       .article-content :global(h6) {
         margin: 32px 0 12px;
         font-size: 16px;
