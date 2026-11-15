@@ -7,6 +7,7 @@ author: Seeun Jung
 date: 2026-11-11T01:39
 draft: false
 homeImage: /images/mwaxd22w-989urn98.png
+ogImage: /images/og-dsprofessor-kimdongil.jpg
 ---
 **[교수님 인터뷰] 데이터사이언스전공 김동일 교수님을 소개합니다!**
 

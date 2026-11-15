@@ -8,8 +8,9 @@
 
 settings:
   commit:
-    # 편집자(이메일 초대)가 저장해도 커밋에 그 사람 이름·이메일이 남도록
-    identity: user
+    # 저장소가 공개라 편집자 이메일이 커밋에 남지 않도록 app 사용 (user로 바꾸지 말 것).
+    # 이메일 초대 편집자는 Pages CMS 앱 이름으로, GitHub 계정 편집자는 GitHub 계정 설정대로 기록됨.
+    identity: app
 
 media:
   input: public/images
