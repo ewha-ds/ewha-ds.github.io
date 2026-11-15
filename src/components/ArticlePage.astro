@@ -25,9 +25,10 @@ const formattedDate = post.data.date
   })
   .toUpperCase();
 
-// 목차: 큰 제목(#, ##)만. 없으면 ### 까지 사용.
+// 목차: 큰 제목(#, ##)만. ##가 없는 글(예: 인터뷰 질문을 ####로 쓴 글)은
+// 글에서 가장 큰 제목 단계를 사용.
 // 본문 제목에 붙은 번호("1.", "2.1")는 목차가 01, 02로 따로 매기므로 떼어낸다.
-const tocDepth = headings.some((heading) => heading.depth <= 2) ? 2 : 3;
+const tocDepth = Math.max(2, Math.min(...headings.map((heading) => heading.depth), 6));
 const tocItems = headings
   .filter((heading) => heading.depth <= tocDepth)
   .map((heading) => ({

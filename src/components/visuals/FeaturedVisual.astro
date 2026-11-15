@@ -114,7 +114,8 @@ const VisualComponent =
     height: 100%;
     min-height: 480px;
     object-fit: contain;
-    padding: 32px;
+    /* 이미지가 영역을 꽉 채우지 않도록 여백을 넉넉히 (약 75% 크기로 보임) */
+    padding: clamp(48px, 12%, 120px);
     box-sizing: border-box;
   }
 
