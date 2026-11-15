@@ -5,6 +5,7 @@ import Header from "./Header.astro";
 import Footer from "./Footer.astro";
 import SEO from "./SEO.astro";
 import "katex/dist/katex.min.css";
+import { titleSize } from "../lib/title";
 
 interface Props {
   post: CollectionEntry<"posts">;
@@ -24,9 +25,15 @@ const formattedDate = post.data.date
   })
   .toUpperCase();
 
-const tocItems = headings.filter(
-  (heading) => heading.depth <= 2
-);
+// 목차: 큰 제목(#, ##)만. 없으면 ### 까지 사용.
+// 본문 제목에 붙은 번호("1.", "2.1")는 목차가 01, 02로 따로 매기므로 떼어낸다.
+const tocDepth = headings.some((heading) => heading.depth <= 2) ? 2 : 3;
+const tocItems = headings
+  .filter((heading) => heading.depth <= tocDepth)
+  .map((heading) => ({
+    ...heading,
+    text: heading.text.replace(/^\d+(\.\d+)*\.?\s+/, "") || heading.text,
+  }));
 
 const activeCategory =
   post.data.category === "TECH"
@@ -128,6 +135,20 @@ const activeCategory =
         line-height: 0.88;
         letter-spacing: -0.07em;
         font-weight: 800;
+        word-break: keep-all;
+      }
+
+      /* 긴 제목(주로 한글)은 단계적으로 작게. 기준은 src/lib/title.ts */
+      .article-title[data-size="long"] {
+        font-size: clamp(48px, 6vw, 96px);
+        line-height: 1.02;
+        letter-spacing: -0.05em;
+      }
+
+      .article-title[data-size="xlong"] {
+        font-size: clamp(40px, 4.6vw, 72px);
+        line-height: 1.1;
+        letter-spacing: -0.04em;
       }
 
       .article-subtitle {
@@ -595,6 +616,15 @@ const activeCategory =
         transform: translateX(3px);
       }
 
+      /* 인터뷰 질문처럼 긴 제목은 두 줄까지만 */
+      .toc-text {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        word-break: keep-all;
+      }
+
       .toc-number {
         color: var(--green);
 
@@ -677,6 +707,14 @@ const activeCategory =
           font-size: clamp(54px, 17vw, 90px);
         }
 
+        .article-title[data-size="long"] {
+          font-size: clamp(38px, 11vw, 60px);
+        }
+
+        .article-title[data-size="xlong"] {
+          font-size: clamp(32px, 8.5vw, 48px);
+        }
+
         .article-subtitle {
           margin-top: 28px;
 
@@ -743,7 +781,7 @@ const activeCategory =
             </span>
           </div>
 
-          <h1 class="article-title">
+          <h1 class="article-title" data-size={titleSize(post.data.title)}>
             {post.data.title}
           </h1>
 
@@ -857,7 +895,7 @@ const activeCategory =
                           {String(index + 1).padStart(2, "0")}
                         </span>
 
-                        <span>
+                        <span class="toc-text">
                           {heading.text}
                         </span>
                       </a>

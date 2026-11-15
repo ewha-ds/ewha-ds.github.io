@@ -5,6 +5,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SEO from "../components/SEO.astro";
 import FeaturedVisual from "../components/visuals/FeaturedVisual.astro";
+import { titleSize } from "../lib/title";
 
 const posts = (await getCollection("posts"))
   .filter(isPublished)
@@ -233,6 +234,20 @@ const formattedDate = featured
         font-size: clamp(56px, 7vw, 104px);
         line-height: 0.9;
         letter-spacing: -0.06em;
+        word-break: keep-all;
+      }
+
+      /* 긴 제목(주로 한글)은 단계적으로 작게. 기준은 src/lib/title.ts */
+      .featured-title[data-size="long"] {
+        font-size: clamp(42px, 4.8vw, 76px);
+        line-height: 1.02;
+        letter-spacing: -0.05em;
+      }
+
+      .featured-title[data-size="xlong"] {
+        font-size: clamp(36px, 3.8vw, 60px);
+        line-height: 1.1;
+        letter-spacing: -0.04em;
       }
 
       .featured-subtitle {
@@ -527,6 +542,14 @@ const formattedDate = featured
           grid-template-columns: 1fr;
         }
 
+        .featured-title[data-size="long"] {
+          font-size: clamp(36px, 10vw, 56px);
+        }
+
+        .featured-title[data-size="xlong"] {
+          font-size: clamp(30px, 8vw, 44px);
+        }
+
         .cards {
           grid-template-columns: 1fr;
         }
@@ -654,7 +677,7 @@ const formattedDate = featured
                 </div>
 
                 <div>
-                  <h2 class="featured-title">
+                  <h2 class="featured-title" data-size={titleSize(featured.data.title)}>
                     {featured.data.title}
                   </h2>
 
@@ -675,7 +698,7 @@ const formattedDate = featured
               </div>
 
               <FeaturedVisual
-                type={featured.data.visual ?? categoryVisual[featured.data.category]}
+                type={featured.data.visual ?? (featured.data.homeImage ? undefined : categoryVisual[featured.data.category])}
                 image={featured.data.homeImage}
                 imageAlt={featured.data.title}
               />
