@@ -56,6 +56,12 @@ public/images/  본문·OG 이미지 (CMS 업로드 위치)
 임시저장·예약 글은 `/preview/{id}/` 로 빌드됩니다 (`src/pages/preview/`). 목록은 `/preview/`.
 사이트 어디에도 링크되지 않고 `noindex`가 걸려 있습니다. 공개 글(`/posts/`)과 미리보기는 같은 레이아웃 `src/components/ArticlePage.astro` 를 씁니다.
 
+## 검색 노출 (sitemap · RSS)
+
+- `/sitemap.xml` (`src/pages/sitemap.xml.ts`), `/rss.xml` (`src/pages/rss.xml.ts`): 공개 글만 포함합니다(`isPublished`). 패키지 없이 직접 생성.
+- `public/robots.txt`: `/preview/` 수집 차단, sitemap 위치 안내.
+- Google Search Console · 네이버 서치어드바이저에 사이트를 등록하고 sitemap(네이버는 RSS도)을 제출해 둡니다. 소유 확인용 meta 태그는 `src/components/SEO.astro` 에 추가합니다.
+
 ## 권한 구조
 
 | 역할 | 방식 | 할 수 있는 것 |
