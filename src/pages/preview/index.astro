@@ -1,18 +1,22 @@
 ---
 import { getCollection } from "astro:content";
 import { isPreviewOnly, isScheduled, previewStatus, formatDateTime } from "../../lib/posts";
+import { noticeTypeLabel } from "../../lib/notices";
 
 // 임시저장 글 목록. 사이트 메뉴에는 없고, 주소를 아는 사람만 들어옵니다.
 const drafts = (await getCollection("posts"))
   .filter(isPreviewOnly)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
+const draftNotices = (await getCollection("notices"))
+  .filter(isPreviewOnly)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
     <title>미리보기 | EWHA DS</title>
     <style>
@@ -46,6 +50,7 @@ const drafts = (await getCollection("posts"))
         color: #171a19;
       }
       .tag.scheduled { background: #00664f; color: #fff; }
+      h2 { font-size: 16px; margin: 48px 0 12px; }
       .empty { color: #707674; padding: 18px 0; border-top: 1px solid #dce4e1; }
     </style>
   </head>
@@ -66,6 +71,20 @@ const drafts = (await getCollection("posts"))
               <div class="meta"><span class={isScheduled(post) ? "tag scheduled" : "tag"}>{previewStatus(post)}</span> {post.data.category} · {formatDateTime(post.data.date)} · {post.data.author}</div>
               <div class="title">{post.data.title}</div>
               <div class="sub">{post.data.subtitle}</div>
+            </a>
+          ))
+        )
+      }
+
+      <h2>공지</h2>
+      {
+        draftNotices.length === 0 ? (
+          <div class="empty">공개 전인 공지가 없습니다.</div>
+        ) : (
+          draftNotices.map((notice) => (
+            <a class="item" href={`/preview/notice/${notice.id}/`}>
+              <div class="meta"><span class={isScheduled(notice) ? "tag scheduled" : "tag"}>{previewStatus(notice)}</span> NOTICE · {noticeTypeLabel(notice.data.type)} · {formatDateTime(notice.data.date)}</div>
+              <div class="title">{notice.data.title}</div>
             </a>
           ))
         )

@@ -1,6 +1,6 @@
 ---
 interface Props {
-  active?: "TECH" | "RESEARCH" | "CAREER";
+  active?: "TECH" | "RESEARCH" | "CAREER" | "NOTICE";
 }
 
 const { active } = Astro.props;
@@ -29,6 +29,13 @@ const { active } = Astro.props;
       class={active === "CAREER" ? "active" : ""}
     >
       CAREER
+    </a>
+
+    <a
+      href="/notice"
+      class={active === "NOTICE" ? "active" : ""}
+    >
+      NOTICE
     </a>
 
     <a href="/#about">
@@ -76,8 +83,16 @@ const { active } = Astro.props;
       CAREER
     </a>
 
-    <a href="/#about">
+    <a
+      href="/notice"
+      class={active === "NOTICE" ? "active" : ""}
+    >
       <span>04</span>
+      NOTICE
+    </a>
+
+    <a href="/#about">
+      <span>05</span>
       ABOUT
     </a>
   </nav>
@@ -230,6 +245,10 @@ const { active } = Astro.props;
   @media (max-width: 900px) {
     .header {
       height: 72px;
+    }
+
+    .brand {
+      font-size: 24px;
     }
 
     .desktop-nav {

@@ -1,0 +1,289 @@
+---
+import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import Header from "./Header.astro";
+import Footer from "./Footer.astro";
+import SEO from "./SEO.astro";
+import ViewCount from "./ViewCount.astro";
+import "../styles/article.css";
+import { titleSize } from "../lib/title";
+import { isPublished } from "../lib/posts";
+import { noticeTypeLabel, sortNotices } from "../lib/notices";
+
+/*
+  공지 상세. 글(ArticlePage)과 같은 레이아웃·스타일(src/styles/article.css)을 씁니다.
+  /notice/[...id] (공개) 와 /preview/notice/[...id] (미리보기) 가 함께 씁니다.
+*/
+interface Props {
+  notice: CollectionEntry<"notices">;
+  /** 미리보기일 때 상단 띠에 표시할 문구. 없으면 공개 공지 */
+  preview?: string;
+}
+
+const { notice, preview } = Astro.props;
+const { Content, headings } = await render(notice);
+const { title, subtitle, type, date, image, link } = notice.data;
+const typeLabel = noticeTypeLabel(type);
+
+const formattedDate = date
+  .toLocaleDateString("en-US", { month: "long", day: "2-digit", year: "numeric" })
+  .toUpperCase();
+
+const shortDate = (d: Date) =>
+  d.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" }).toUpperCase();
+
+// 검색·공유용 설명: 한 줄 설명이 없으면 본문 앞부분
+const description =
+  subtitle ??
+  ((notice.body ?? "")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/[#>*_`~|-]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 120) || `${typeLabel} · EWHA DS`);
+
+// 목차: 글과 같은 규칙 (가장 큰 제목 단계, 앞 번호 제거)
+const tocDepth = Math.max(2, Math.min(...headings.map((h) => h.depth), 6));
+const tocItems = headings
+  .filter((h) => h.depth <= tocDepth)
+  .map((h) => ({ ...h, text: h.text.replace(/^\d+(\.\d+)*\.?\s+/, "") || h.text }));
+
+// 글 끝 "다른 공지": 고정·최신순 3개
+const otherNotices = (await getCollection("notices"))
+  .filter((n) => isPublished(n) && n.id !== notice.id)
+  .sort(sortNotices)
+  .slice(0, 3);
+---
+
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {preview && <meta name="robots" content="noindex, nofollow" />}
+
+    <SEO
+      title={`${title} | EWHA DS`}
+      description={description}
+      image={image ?? "/default-og.png"}
+      type="article"
+      publishedTime={date}
+    />
+
+    <style>
+      :root {
+        --green: #00664f;
+        --green-dark: #004b3c;
+        --green-light: #eaf3ef;
+        --text: #171a19;
+        --muted: #707674;
+        --line: #dce4e1;
+        --background: #fafbf9;
+        --white: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--background);
+        color: var(--text);
+
+        font-family:
+          Pretendard,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      /* 공지 전용: 포스터, 신청 버튼 */
+      .poster {
+        max-width: 560px;
+        margin-top: 0;
+
+        border: 1px solid var(--line);
+      }
+
+      .notice-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+
+        margin: 0 0 48px;
+        padding: 16px 26px;
+
+        border: 0;
+        background: var(--green);
+        color: var(--white);
+        text-decoration: none;
+
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+
+        transition: background 160ms ease;
+      }
+
+      .notice-link:hover {
+        background: var(--green-dark);
+      }
+
+      .side-link {
+        color: var(--green);
+        font-weight: 700;
+      }
+
+      @media (max-width: 900px) {
+        .poster {
+          max-width: 100%;
+        }
+
+        .notice-link {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 36px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    {preview && <div class="preview-banner">미리보기 · {preview}</div>}
+
+    <main class="page">
+      <Header active="NOTICE" />
+
+      <article>
+        <header class="article-hero">
+          <div class="article-topline">
+            <span>NOTICE · {typeLabel}</span>
+            <span>EWHA DS</span>
+          </div>
+
+          <h1 class="article-title" data-size={titleSize(title)}>
+            {title}
+          </h1>
+
+          {subtitle && <div class="article-subtitle">{subtitle}</div>}
+
+          <div class="article-meta">
+            <div>
+              <span>POSTED BY </span>
+              <strong>PIUM</strong>
+            </div>
+
+            <div>
+              <span>PUBLISHED </span>
+              <strong>{formattedDate}</strong>
+            </div>
+
+            <div data-views-wrap hidden>
+              <span>VIEWS </span>
+              <strong><ViewCount /></strong>
+            </div>
+          </div>
+        </header>
+
+        <div class="article-layout">
+          <aside class="article-side">
+            <div class="side-block">
+              <div class="side-label">TYPE</div>
+              <div class="side-value">{typeLabel}</div>
+            </div>
+
+            <div class="side-block">
+              <div class="side-label">PUBLISHED</div>
+              <div class="side-value">{formattedDate}</div>
+            </div>
+
+            {
+              link && (
+                <div class="side-block">
+                  <div class="side-label">LINK</div>
+                  <div class="side-value">
+                    <a class="side-link" href={link} target="_blank" rel="noopener noreferrer">
+                      신청 · 바로가기 ↗
+                    </a>
+                  </div>
+                </div>
+              )
+            }
+
+            <div class="side-block" data-views-wrap hidden>
+              <div class="side-label">VIEWS</div>
+              <div class="side-value"><ViewCount /></div>
+            </div>
+          </aside>
+
+          <div class="article-content">
+            {image && <img class="poster" src={image} alt={`${title} 포스터`} />}
+
+            {
+              link && (
+                <a class="notice-link" href={link} target="_blank" rel="noopener noreferrer">
+                  신청 · 바로가기 ↗
+                </a>
+              )
+            }
+
+            <Content />
+          </div>
+
+          <aside class="right-rail">
+            {
+              tocItems.length > 0 && (
+                <>
+                  <div class="right-title">CONTENTS</div>
+                  <nav class="toc">
+                    {tocItems.map((heading, index) => (
+                      <a class="toc-item" href={`#${heading.slug}`}>
+                        <span class="toc-number">{String(index + 1).padStart(2, "0")}</span>
+                        <span class="toc-text">{heading.text}</span>
+                      </a>
+                    ))}
+                  </nav>
+                </>
+              )
+            }
+          </aside>
+        </div>
+
+        {
+          otherNotices.length > 0 && (
+            <section class="next-reads">
+              <div class="next-label">MORE NOTICE · 다른 공지</div>
+
+              <div class="next-grid">
+                {otherNotices.map((n) => (
+                  <a class="next-card" href={`/notice/${n.id}/`}>
+                    <div class="next-meta">
+                      <span>{noticeTypeLabel(n.data.type)}</span>
+                      <span>{shortDate(n.data.date)}</span>
+                    </div>
+
+                    <div class="next-title">{n.data.title}</div>
+
+                    {n.data.subtitle && <div class="next-subtitle">{n.data.subtitle}</div>}
+                  </a>
+                ))}
+              </div>
+            </section>
+          )
+        }
+
+        <div class="article-end">
+          <a href="/notice" class="back">← BACK TO NOTICE</a>
+        </div>
+      </article>
+
+      <Footer />
+    </main>
+  </body>
+</html>

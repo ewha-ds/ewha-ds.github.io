@@ -1,0 +1,19 @@
+---
+import { getCollection } from "astro:content";
+import { isPublished } from "../../lib/posts";
+import NoticePage from "../../components/NoticePage.astro";
+
+// 공개 공지만 생성. 레이아웃은 components/NoticePage.astro
+export async function getStaticPaths() {
+  const notices = (await getCollection("notices")).filter(isPublished);
+
+  return notices.map((notice) => ({
+    params: { id: notice.id },
+    props: { notice },
+  }));
+}
+
+const { notice } = Astro.props;
+---
+
+<NoticePage notice={notice} />

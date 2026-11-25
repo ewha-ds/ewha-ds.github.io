@@ -54,7 +54,7 @@ const formattedDate = featured
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <SEO
       title="EWHA DS"
@@ -534,8 +534,87 @@ const formattedDate = featured
           padding: 64px 0;
         }
 
+        .hero {
+          gap: 28px;
+          padding: 44px 0 40px;
+        }
+
+        .hero-kicker {
+          margin-bottom: 18px;
+          font-size: 11px;
+        }
+
+        .hero-title {
+          font-size: clamp(52px, 19vw, 110px);
+        }
+
         .hero-info {
           padding-left: 0;
+        }
+
+        /* 데스크톱용 줄바꿈은 모바일에서 어색하게 끊기므로 제거 */
+        .hero-info p br {
+          display: none;
+        }
+
+        .hero-info p {
+          font-size: 16px;
+        }
+
+        .hero-tags {
+          margin-top: 24px;
+        }
+
+        .section-label {
+          padding: 36px 0 16px;
+          font-size: 11px;
+        }
+
+        .featured {
+          min-height: 0;
+        }
+
+        .featured-copy {
+          gap: 28px;
+          padding: 28px 22px;
+        }
+
+        .featured-meta {
+          flex-wrap: wrap;
+          gap: 6px 16px;
+          font-size: 11px;
+        }
+
+        .featured-title {
+          font-size: clamp(40px, 13vw, 64px);
+        }
+
+        .featured-subtitle {
+          margin-top: 16px;
+          font-size: 17px;
+        }
+
+        .sections {
+          padding: 56px 0 72px;
+        }
+
+        .sections-title {
+          margin-bottom: 24px;
+        }
+
+        .card {
+          min-height: 0;
+          gap: 24px;
+          padding: 26px 22px;
+        }
+
+        .card h3 {
+          margin-bottom: 8px;
+          font-size: 28px;
+        }
+
+        .card-arrow {
+          font-size: 20px;
         }
 
         .featured {
@@ -562,7 +641,7 @@ const formattedDate = featured
         }
 
         .sections-title h2 {
-          font-size: 42px;
+          font-size: clamp(32px, 10vw, 42px);
         }
 
         .about {
@@ -628,7 +707,7 @@ const formattedDate = featured
 
         <div class="hero-info">
           <p>
-            이화여자대학교 제4대 데이터사이언스전공 학생회 피움이<br />
+            이화여자대학교 제4대 데이터사이언스전공 학생회 피움이 <br />
             운영하는 학술·진로 콘텐츠 아카이브
           </p>
 

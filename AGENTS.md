@@ -14,6 +14,10 @@ Academic archive site for the EWHA Data Science student council. Content is mana
 - Body is edited with Pages CMS rich-text (markdown output); keep markdown features compatible with it.
 - Moving or renaming a published post changes its URL; add the old path to `redirects` in `astro.config.mjs`.
 - Article layout lives in `src/components/ArticlePage.astro`, shared by `/posts/[...id]` (published) and `/preview/[...id]` (drafts, noindex).
+- Notices are a separate `notices` collection (`src/content/notices/`, pages under `/notice`, layout `src/components/NoticePage.astro`). Notice type labels live in `src/lib/notices.ts`; keep them in sync with the schema enum and `.pages.yml`.
+- Article and notice detail pages share `src/styles/article.css`. Keep `:root`/`*`/`body` base rules scoped in each component (global `*` breaks KaTeX layout); the base link rule there uses `:where()` so class rules win.
+- View counts: GoatCounter, configured only by `GOATCOUNTER_CODE` in `src/lib/analytics.ts` (empty = off, no visual change).
+- Desktop design is final. Mobile changes go only inside `@media (max-width: 900px)` blocks; don't alter desktop rules.
 - Operator docs: `HANDOVER.md` (Korean, non-technical). Developer docs: `README.md`.
 
 ## Development

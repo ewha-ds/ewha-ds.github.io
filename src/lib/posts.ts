@@ -1,9 +1,8 @@
-import type { CollectionEntry } from "astro:content";
-
-type Post = CollectionEntry<"posts">;
+// 글(posts)과 공지(notices) 모두 draft·date 규칙이 같아서 둘 다 받습니다.
+type Post = { data: { draft: boolean; date: Date } };
 
 /*
-  공개 규칙 (사이트 전체에서 이 파일만 기준으로 사용)
+  공개 규칙 (사이트 전체에서 이 파일만 기준으로 사용, 글·공지 공통)
 
   - 임시저장(draft: true)            → 비공개, /preview/ 에서만 보임
   - 공개(draft: false) + 게시 시각 전 → 예약, /preview/ 에서만 보임
