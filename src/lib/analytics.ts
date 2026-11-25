@@ -9,7 +9,7 @@
   - GoatCounter가 응답을 최대 4시간 캐시하므로 숫자는 바로바로 오르지 않습니다.
   - 서비스가 중단되거나 막혀도 사이트는 정상 동작하고 조회수만 안 보입니다.
 */
-export const GOATCOUNTER_CODE = "";
+export const GOATCOUNTER_CODE = "ewhads";
 
 export const goatcounterBase = GOATCOUNTER_CODE
   ? `https://${GOATCOUNTER_CODE}.goatcounter.com`
