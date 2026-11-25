@@ -38,6 +38,12 @@ const sections = [
     desc: "데이터사이언스 전공자의 진로와 다양한 커리어 이야기를 기록합니다.",
     href: "/career",
   },
+  {
+    label: "NOTICE",
+    title: "Notice",
+    desc: "데이터사이언스전공 행사 소식과 학과 사업, 학생회 공지를 전합니다.",
+    href: "/notice",
+  },
 ];
 
 const formattedDate = featured
@@ -288,7 +294,7 @@ const formattedDate = featured
 
       .cards {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
 
         border-top: 1px solid var(--line);
         border-left: 1px solid var(--line);
@@ -732,6 +738,13 @@ const formattedDate = featured
             >
               CAREER
             </a>
+
+            <a
+              href="/notice"
+              class="tag"
+            >
+              NOTICE
+            </a>
           </div>
         </div>
       </section>
@@ -793,7 +806,7 @@ const formattedDate = featured
           </h2>
 
           <span>
-            TECH · RESEARCH · CAREER
+            TECH · RESEARCH · CAREER · NOTICE
           </span>
         </div>
 
