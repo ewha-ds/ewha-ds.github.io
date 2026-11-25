@@ -5,7 +5,7 @@ subtitle: 학습할 때 잘하던 AI는 왜 현장에서 틀릴까?
 urlKey: domainshift
 author: Seeun Jung
 date: 2026-10-18T21:56
-draft: true
+draft: false
 ---
 ## 들어가며
 
