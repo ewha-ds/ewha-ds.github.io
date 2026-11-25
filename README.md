@@ -86,7 +86,10 @@ src/content/notices/{urlKey}.md   → /notice/{urlKey}/   (목록: /notice)
 ## 미리보기
 
 임시저장·예약 글은 `/preview/{id}/` 로 빌드됩니다 (`src/pages/preview/`). 목록은 `/preview/`.
-사이트 어디에도 링크되지 않고 `noindex`가 걸려 있습니다. 공개 글(`/posts/`)과 미리보기는 같은 레이아웃 `src/components/ArticlePage.astro` 를 씁니다.
+사이트 어디에도 링크되지 않고 `noindex`가 걸려 있습니다.
+
+- Pages CMS에는 미리보기 링크 기능이 없어서, `/preview/` 페이지에 **북마크 버튼(북마클릿)**을 둡니다. CMS에서 글을 연 채 누르면 주소 속 파일 경로(`src/content/...md`)로 그 글의 미리보기를 엽니다. CMS 주소 형식이 바뀌면 `src/pages/preview/index.astro`의 정규식을 고치세요.
+- 없는 미리보기 주소(이미 공개됐거나 아직 빌드 전)는 404 페이지에 안내와 공개 주소 링크가 뜹니다 (`src/pages/404.astro`). 공개 글(`/posts/`)과 미리보기는 같은 레이아웃 `src/components/ArticlePage.astro` 를 씁니다.
 
 ## 검색 노출 (sitemap · RSS)
 

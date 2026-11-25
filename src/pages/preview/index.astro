@@ -8,6 +8,21 @@ const drafts = (await getCollection("posts"))
   .filter(isPreviewOnly)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
+/*
+  CMS 미리보기 북마크(북마클릿).
+  Pages CMS에서 글을 연 상태로 누르면, 현재 주소에 든 파일 경로
+  (src/content/posts/{카테고리}/{글}.md, src/content/notices/{공지}.md)를 읽어
+  그 글의 미리보기를 새 탭으로 엽니다. 경로를 못 찾으면 이 목록을 엽니다.
+  Pages CMS 주소 형식이 바뀌어 동작하지 않으면 아래 정규식을 고치세요.
+*/
+const site = Astro.site?.origin ?? "https://ewha-ds.github.io";
+const bookmarklet =
+  "javascript:(()=>{let u=location.href;for(let i=0;i<3;i++){try{u=decodeURIComponent(u)}catch(e){}}" +
+  "let p='/preview/',m=u.match(/src\\/content\\/notices\\/([^\\/?#]+)\\.md/);" +
+  "if(m)p+='notice/'+m[1]+'/';" +
+  "else if(m=u.match(/src\\/content\\/posts\\/(tech|research|career)\\/([^\\/?#]+)\\.md/))p+=m[1]+'/'+m[2]+'/';" +
+  `window.open('${site}'+p,'_blank')})()`;
+
 const draftNotices = (await getCollection("notices"))
   .filter(isPreviewOnly)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -51,6 +66,25 @@ const draftNotices = (await getCollection("notices"))
       }
       .tag.scheduled { background: #00664f; color: #fff; }
       h2 { font-size: 16px; margin: 48px 0 12px; }
+      .bookmark {
+        margin: 0 0 40px;
+        padding: 18px 20px;
+        border: 1px solid #dce4e1;
+        background: #fff;
+        font-size: 14px;
+        line-height: 1.7;
+      }
+      .bookmark ol { margin: 8px 0 0; padding-left: 20px; }
+      .bookmarklet {
+        display: inline-block;
+        margin: 4px 0;
+        padding: 6px 12px;
+        background: #00664f;
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: grab;
+      }
       .empty { color: #707674; padding: 18px 0; border-top: 1px solid #dce4e1; }
     </style>
   </head>
@@ -61,6 +95,18 @@ const draftNotices = (await getCollection("notices"))
         아직 공개되지 않은 글(임시저장·예약)이 사이트에서 어떻게 보이는지 확인하는 곳입니다.
         저장 후 2~3분 뒤 새로고침하세요.
       </p>
+
+      <div class="bookmark">
+        <strong>CMS에서 바로 미리보기 (처음 한 번만 설정)</strong>
+        <ol>
+          <li>
+            아래 초록 버튼을 브라우저 <b>북마크바로 끌어다 놓으세요.</b>
+            (북마크바가 안 보이면 Chrome에서 Cmd+Shift+B / Ctrl+Shift+B)
+            <br /><a class="bookmarklet" href={bookmarklet} onclick="event.preventDefault(); alert('클릭이 아니라 북마크바로 끌어다 놓으세요.');">EWHA DS 미리보기</a>
+          </li>
+          <li>Pages CMS에서 글·공지를 저장하고 2~3분 뒤, 그 글이 열린 상태로 북마크를 누르면 미리보기가 새 탭으로 열립니다.</li>
+        </ol>
+      </div>
 
       {
         drafts.length === 0 ? (

@@ -62,7 +62,7 @@ components:
     type: boolean
     label: 임시저장
     default: true
-    description: '켜져 있으면 사이트에 보이지 않습니다. 공개(또는 예약)하려면 끄고 저장하세요. (저장소는 공개라 파일 자체는 GitHub에서 보입니다)'
+    description: '켜져 있으면 사이트에 보이지 않습니다. 공개(또는 예약)하려면 끄고 저장하세요. 저장 2~3분 뒤 미리보기: ewha-ds.github.io/preview/ (북마크 버튼 설정법도 거기 있어요). (저장소는 공개라 파일 자체는 GitHub에서 보입니다)'
 
   authorUrl:
     type: string
