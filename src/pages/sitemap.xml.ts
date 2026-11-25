@@ -12,7 +12,11 @@ export const GET: APIRoute = async ({ site }) => {
     .filter(isPublished)
     .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-  const pages = ["/", "/tech/", "/research/", "/career/"];
+  const notices = (await getCollection("notices"))
+    .filter(isPublished)
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+  const pages = ["/", "/tech/", "/research/", "/career/", "/notice/"];
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -21,6 +25,12 @@ ${posts
   .map(
     (post) =>
       `  <url><loc>${url(`/posts/${post.id}/`)}</loc><lastmod>${post.data.date.toISOString()}</lastmod></url>`
+  )
+  .join("\n")}
+${notices
+  .map(
+    (notice) =>
+      `  <url><loc>${url(`/notice/${notice.id}/`)}</loc><lastmod>${notice.data.date.toISOString()}</lastmod></url>`
   )
   .join("\n")}
 </urlset>

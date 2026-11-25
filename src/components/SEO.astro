@@ -1,4 +1,6 @@
 ---
+import { goatcounterBase } from "../lib/analytics";
+
 interface Props {
   title: string;
   description?: string;
@@ -18,6 +20,9 @@ const {
 } = Astro.props;
 
 const siteName = "EWHA DS";
+
+// 조회수 집계 (src/lib/analytics.ts). 미리보기 페이지는 세지 않음
+const countViews = goatcounterBase && !Astro.url.pathname.startsWith("/preview");
 
 const canonicalURL = Astro.site
   ? new URL(Astro.url.pathname, Astro.site).toString()
@@ -69,5 +74,16 @@ const imageURL = Astro.site
 {
   type === "article" && author && (
     <meta property="article:author" content={author} />
+  )
+}
+
+{
+  countViews && (
+    <script
+      is:inline
+      data-goatcounter={`${goatcounterBase}/count`}
+      async
+      src="//gc.zgo.at/count.js"
+    ></script>
   )
 }

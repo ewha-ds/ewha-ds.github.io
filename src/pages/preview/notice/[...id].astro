@@ -1,0 +1,26 @@
+---
+import { getCollection } from "astro:content";
+import { isPreviewOnly, isScheduled, formatDateTime } from "../../../lib/posts";
+import NoticePage from "../../../components/NoticePage.astro";
+
+// 임시저장·예약 공지 미리보기. 목록은 /preview/
+export async function getStaticPaths() {
+  const drafts = (await getCollection("notices")).filter(isPreviewOnly);
+
+  return drafts.map((notice) => ({
+    params: { id: notice.id },
+    props: { notice },
+  }));
+}
+
+const { notice } = Astro.props;
+---
+
+<NoticePage
+  notice={notice}
+  preview={
+    isScheduled(notice)
+      ? `예약 공지 · ${formatDateTime(notice.data.date)}에 자동 공개됩니다 (약 1시간 이내)`
+      : "임시저장 공지 · 사이트 목록에는 보이지 않습니다"
+  }
+/>

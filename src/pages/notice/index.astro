@@ -1,0 +1,488 @@
+---
+import { getCollection } from "astro:content";
+import { isPublished } from "../../lib/posts";
+import { NOTICE_TYPES, noticeTypeLabel, sortNotices } from "../../lib/notices";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import SEO from "../../components/SEO.astro";
+
+// 구조·스타일은 tech.astro 등 카테고리 페이지와 같습니다. 고정 공지가 먼저, 그다음 최신순.
+const notices = (await getCollection("notices"))
+  .filter(isPublished)
+  .sort(sortNotices);
+
+const latest = notices[0];
+
+// 글이 있는 종류만 필터 버튼으로 표시
+const usedTypes = NOTICE_TYPES.filter((t) => notices.some((n) => n.data.type === t.key));
+
+const shortDate = (d: Date) => d.toLocaleDateString("en-US");
+---
+
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SEO
+      title="Notice | EWHA DS"
+      description="데이터사이언스전공 행사 소식과 학과 사업, 학생회 공지를 전합니다."
+      image="/default-og.png"
+    />
+
+    <style>
+      :root {
+        --green: #00664f;
+        --green-light: #eaf3ef;
+        --text: #171a19;
+        --muted: #707674;
+        --line: #dce4e1;
+        --background: #fafbf9;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--background);
+        color: var(--text);
+
+        font-family:
+          Pretendard,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        width: min(1440px, calc(100% - 48px));
+        margin: 0 auto;
+      }
+
+      .hero {
+        padding: 90px 0 72px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .kicker {
+        margin-bottom: 24px;
+
+        color: var(--green);
+
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+      }
+
+      .title {
+        margin: 0;
+
+        font-size: clamp(72px, 10vw, 140px);
+        line-height: 0.86;
+        letter-spacing: -0.07em;
+      }
+
+      .desc {
+        max-width: 600px;
+
+        margin-top: 32px;
+
+        color: var(--muted);
+
+        font-size: 20px;
+        line-height: 1.7;
+      }
+
+      .latest {
+        padding: 56px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .section-label {
+        margin-bottom: 24px;
+
+        color: var(--green);
+
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+      }
+
+      .latest-card {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+
+        gap: 40px;
+
+        padding: 36px 0;
+      }
+
+      .latest-title {
+        margin: 0;
+
+        font-size: clamp(42px, 6vw, 82px);
+        letter-spacing: -0.05em;
+      }
+
+      .latest-subtitle {
+        margin-top: 18px;
+
+        color: var(--muted);
+
+        font-size: 18px;
+        line-height: 1.6;
+      }
+
+      .latest-meta {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+
+        color: var(--muted);
+
+        font-size: 12px;
+      }
+
+      .archive {
+        padding: 72px 0 110px;
+      }
+
+      .archive-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+
+        border-top: 1px solid var(--line);
+        border-left: 1px solid var(--line);
+      }
+
+      .post-card {
+        min-height: 260px;
+
+        padding: 30px;
+
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        transition: 180ms ease;
+      }
+
+      .post-card:hover {
+        background: var(--green-light);
+      }
+
+      .post-title {
+        margin: 0;
+
+        font-size: 30px;
+        letter-spacing: -0.04em;
+      }
+
+      .post-subtitle {
+        margin-top: 12px;
+
+        color: var(--muted);
+
+        line-height: 1.6;
+      }
+
+      .post-meta {
+        color: var(--muted);
+
+        font-size: 11px;
+        letter-spacing: 0.08em;
+      }
+
+      .empty {
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .card-label {
+        display: flex;
+        gap: 10px;
+
+        margin-bottom: 18px;
+
+        color: var(--green);
+
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+      }
+
+      .pin {
+        padding: 1px 7px;
+
+        background: var(--green);
+        color: #fff;
+
+        letter-spacing: 0.06em;
+      }
+
+      /* 종류 필터: 홈의 TECH·RESEARCH·CAREER 태그와 같은 모양 */
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        margin-bottom: 28px;
+      }
+
+      .filter {
+        padding: 9px 14px;
+
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: transparent;
+        color: var(--text);
+
+        font: inherit;
+        font-size: 12px;
+        font-weight: 700;
+
+        cursor: pointer;
+
+        transition: 160ms ease;
+      }
+
+      .filter:hover {
+        background: var(--green-light);
+        border-color: var(--green);
+      }
+
+      .filter[aria-pressed="true"] {
+        background: var(--green);
+        border-color: var(--green);
+        color: #fff;
+      }
+
+      /* 한글 제목이 단어 중간에서 끊기지 않게 */
+      .latest-title,
+      .post-title {
+        word-break: keep-all;
+      }
+
+      .post-card[hidden],
+      .empty[hidden] {
+        display: none;
+      }
+
+      @media (max-width: 900px) {
+        .filters {
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          margin: 0 -14px 20px;
+          padding: 0 14px;
+          scrollbar-width: none;
+        }
+
+        .filters::-webkit-scrollbar {
+          display: none;
+        }
+
+        .filter {
+          flex: none;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .page {
+          width: min(100% - 28px, 1440px);
+        }
+
+        /* 큰 제목이 화면보다 넓어지지 않게 (TECHNOLOGY는 72px이면 넘침) */
+        .hero {
+          padding: 48px 0 40px;
+        }
+
+        .kicker {
+          margin-bottom: 16px;
+          font-size: 11px;
+        }
+
+        .title {
+          font-size: clamp(40px, 13vw, 96px);
+          overflow-wrap: anywhere;
+        }
+
+        .desc {
+          margin-top: 20px;
+          font-size: 16px;
+        }
+
+        .latest {
+          padding: 36px 0;
+        }
+
+        .section-label {
+          margin-bottom: 16px;
+        }
+
+        .latest-card {
+          gap: 16px;
+          padding: 12px 0;
+        }
+
+        .latest-title {
+          font-size: clamp(30px, 9vw, 48px);
+          line-height: 1.1;
+          word-break: keep-all;
+        }
+
+        .latest-subtitle {
+          margin-top: 12px;
+          font-size: 16px;
+        }
+
+        .archive {
+          padding: 40px 0 72px;
+        }
+
+        .post-card {
+          min-height: 0;
+          gap: 24px;
+          padding: 24px 20px;
+        }
+
+        .post-title {
+          font-size: 22px;
+          line-height: 1.25;
+          word-break: keep-all;
+        }
+
+        .post-subtitle {
+          margin-top: 8px;
+          font-size: 15px;
+        }
+
+        .latest-card,
+        .archive-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .latest-meta {
+          justify-content: flex-start;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="page">
+      <Header active="NOTICE" />
+
+      <section class="hero">
+        <div class="kicker">EWHA DS · NOTICE</div>
+
+        <h1 class="title">NOTICE</h1>
+
+        <p class="desc">
+          데이터사이언스전공 행사 소식과 학과 사업, 학생회 공지를 전합니다.
+        </p>
+      </section>
+
+      {
+        latest && (
+          <section class="latest">
+            <div class="section-label">{latest.data.pinned ? "PINNED NOTICE" : "LATEST NOTICE"}</div>
+
+            <a href={`/notice/${latest.id}/`} class="latest-card">
+              <div>
+                <h2 class="latest-title">{latest.data.title}</h2>
+
+                {latest.data.subtitle && <div class="latest-subtitle">{latest.data.subtitle}</div>}
+              </div>
+
+              <div class="latest-meta">
+                {noticeTypeLabel(latest.data.type)} · {shortDate(latest.data.date)}
+              </div>
+            </a>
+          </section>
+        )
+      }
+
+      <section class="archive">
+        <div class="section-label">ALL NOTICES</div>
+
+        {
+          usedTypes.length > 1 && (
+            <div class="filters" role="group" aria-label="공지 종류">
+              <button class="filter" type="button" data-filter="ALL" aria-pressed="true">
+                전체
+              </button>
+              {usedTypes.map((t) => (
+                <button class="filter" type="button" data-filter={t.key} aria-pressed="false">
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          )
+        }
+
+        {
+          notices.length > 0 ? (
+            <div class="archive-grid">
+              {notices.map((notice) => (
+                <a href={`/notice/${notice.id}/`} class="post-card" data-type={notice.data.type}>
+                  <div>
+                    <div class="card-label">
+                      {notice.data.pinned && <span class="pin">PINNED</span>}
+                      <span>{noticeTypeLabel(notice.data.type)}</span>
+                    </div>
+
+                    <h3 class="post-title">{notice.data.title}</h3>
+
+                    {notice.data.subtitle && <div class="post-subtitle">{notice.data.subtitle}</div>}
+                  </div>
+
+                  <div class="post-meta">
+                    {shortDate(notice.data.date)}
+                  </div>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <div class="empty">아직 등록된 공지가 없습니다.</div>
+          )
+        }
+
+        <div class="empty filter-empty" hidden>이 종류의 공지가 아직 없습니다.</div>
+      </section>
+
+      <Footer />
+    </main>
+
+    <script>
+      // 종류 필터 (스크립트가 없어도 전체 목록은 보임)
+      const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>(".filter"));
+      const cards = Array.from(document.querySelectorAll<HTMLElement>(".post-card"));
+      const emptyMsg = document.querySelector<HTMLElement>(".filter-empty");
+
+      for (const button of buttons) {
+        button.addEventListener("click", () => {
+          const filter = button.dataset.filter;
+          for (const b of buttons) b.setAttribute("aria-pressed", String(b === button));
+
+          let shown = 0;
+          for (const card of cards) {
+            const match = filter === "ALL" || card.dataset.type === filter;
+            card.hidden = !match;
+            if (match) shown++;
+          }
+          if (emptyMsg) emptyMsg.hidden = shown > 0;
+        });
+      }
+    </script>
+  </body>
+</html>

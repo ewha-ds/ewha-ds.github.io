@@ -151,5 +151,16 @@ const VisualComponent =
     .visual-fallback {
       min-height: 360px;
     }
+
+    /* 홈 대표 이미지는 모바일에서 화면을 다 차지하지 않게 */
+    .featured-visual:has(.visual-image) {
+      min-height: 0;
+    }
+
+    .visual-image {
+      min-height: 0;
+      max-height: 320px;
+      padding: 32px;
+    }
   }
 </style>

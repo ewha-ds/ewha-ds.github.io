@@ -1,0 +1,920 @@
+/*
+  글 상세 레이아웃 공통 스타일.
+  ArticlePage.astro (TECH·RESEARCH·CAREER 글)와 NoticePage.astro (공지)가 함께 씁니다.
+  :root 색상·* box-sizing·body·a 같은 기본 규칙은 각 컴포넌트의 <style>에 둡니다
+  (전역으로 두면 본문 수식(KaTeX)·링크 모양이 바뀜).
+  데스크톱 디자인은 확정. 모바일 조정은 @media (max-width: 900px) 안에서만 합니다.
+*/
+
+/* 레이아웃 링크 기본값. 명시도 0이라 아래 클래스 규칙이 항상 우선.
+   본문 링크(.article-content a)는 아래에서 따로 꾸미므로 제외 */
+:where(a:not(.article-content a)) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.page {
+  width: min(1440px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+/* =========================
+   ARTICLE HERO
+========================= */
+
+.article-hero {
+  padding: 70px 0 64px;
+
+  border-bottom: 1px solid var(--line);
+}
+
+.article-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 64px;
+
+  color: var(--green);
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.article-title {
+  max-width: 1100px;
+  margin: 0;
+
+  font-size: clamp(64px, 9vw, 138px);
+  line-height: 0.88;
+  letter-spacing: -0.07em;
+  font-weight: 800;
+  word-break: keep-all;
+}
+
+/* 긴 제목(주로 한글)은 단계적으로 작게. 기준은 src/lib/title.ts */
+.article-title[data-size="long"] {
+  font-size: clamp(48px, 6vw, 96px);
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+}
+
+.article-title[data-size="xlong"] {
+  font-size: clamp(40px, 4.6vw, 72px);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.article-subtitle {
+  max-width: 720px;
+
+  margin-top: 38px;
+
+  color: var(--muted);
+
+  font-size: 24px;
+  line-height: 1.55;
+  letter-spacing: -0.025em;
+}
+
+.article-meta {
+  display: flex;
+  gap: 36px;
+
+  margin-top: 58px;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.article-meta span {
+  color: var(--muted);
+}
+
+.article-meta strong {
+  color: var(--text);
+}
+
+/* =========================
+   ARTICLE GRID
+========================= */
+
+.article-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(150px, 190px)
+    minmax(0, 760px)
+    minmax(170px, 1fr);
+
+  gap: 72px;
+
+  align-items: start;
+
+  padding: 80px 0 120px;
+}
+
+/* =========================
+   LEFT SIDEBAR
+========================= */
+
+.article-side {
+  position: sticky;
+  top: 32px;
+
+  align-self: start;
+
+  color: var(--muted);
+
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.side-block + .side-block {
+  margin-top: 38px;
+}
+
+.side-label {
+  margin-bottom: 14px;
+
+  color: var(--green);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.side-value {
+  max-width: 150px;
+  line-height: 1.6;
+}
+
+/* =========================
+   ARTICLE CONTENT
+========================= */
+
+.article-content {
+  min-width: 0;
+}
+
+.article-content h1,
+.article-content h2 {
+  scroll-margin-top: 40px;
+
+  margin: 76px 0 26px;
+  padding-top: 10px;
+
+  font-size: 36px;
+  line-height: 1.25;
+  letter-spacing: -0.045em;
+}
+
+.article-content h1:first-child,
+.article-content h2:first-child {
+  margin-top: 0;
+}
+
+.article-content h3 {
+  scroll-margin-top: 40px;
+
+  margin: 50px 0 18px;
+
+  font-size: 24px;
+  line-height: 1.35;
+  letter-spacing: -0.03em;
+}
+
+/* ####: 강조 박스 (인터뷰 질문 등). CMS에서는 Source 모드로 줄 앞에 '#### ' 입력 */
+.article-content h4 {
+  scroll-margin-top: 40px;
+  margin: 64px 0 22px;
+  padding: 18px 22px;
+
+  background: var(--green-light);
+  border-left: 4px solid var(--green);
+
+  font-size: 19px;
+  line-height: 1.55;
+  letter-spacing: -0.02em;
+  word-break: keep-all;
+}
+
+/* #####: 보조 강조 (꼬리 질문 등). 초록 선만 */
+.article-content h5 {
+  scroll-margin-top: 40px;
+  margin: 44px 0 16px;
+  padding: 2px 0 2px 16px;
+
+  border-left: 3px solid var(--green);
+
+  font-size: 17px;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+}
+
+.article-content h6 {
+  margin: 32px 0 12px;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+.article-content h6 {
+  color: var(--muted);
+}
+
+.article-content del {
+  color: var(--muted);
+}
+
+.preview-banner {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 10px 16px;
+  background: #b3261e;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+.article-content p {
+  margin: 0 0 24px;
+
+  font-size: 17px;
+  line-height: 1.9;
+  letter-spacing: -0.012em;
+}
+
+.article-content strong {
+  font-weight: 750;
+}
+
+.article-content a {
+  color: var(--green);
+
+  border-bottom: 1px solid var(--green);
+}
+
+.article-content ul,
+.article-content ol {
+  margin: 24px 0;
+  padding-left: 24px;
+
+  font-size: 17px;
+  line-height: 1.85;
+}
+
+.article-content li {
+  margin: 8px 0;
+}
+
+.article-content blockquote {
+  margin: 42px 0;
+  padding: 26px 30px;
+
+  border-left: 3px solid var(--green);
+
+  background: var(--green-light);
+}
+
+.article-content blockquote p {
+  margin: 0;
+
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.7;
+}
+
+.article-content code {
+  padding: 3px 6px;
+
+  border-radius: 4px;
+
+  background: #eef1ef;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 0.9em;
+}
+
+.article-content pre {
+  overflow-x: auto;
+
+  margin: 36px 0;
+  padding: 26px;
+
+  border-radius: 2px;
+
+  background: #171a19;
+  color: #f7f8f7;
+}
+
+.article-content pre code {
+  padding: 0;
+
+  background: transparent;
+  color: inherit;
+}
+
+.article-content img {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  margin: 42px 0;
+}
+
+/* =========================
+   MATH
+========================= */
+
+.article-content .katex-display {
+  overflow-x: auto;
+
+  margin: 38px 0;
+  padding: 24px 20px;
+
+  background: var(--green-light);
+}
+
+.article-content .katex-display > .katex {
+  text-align: center;
+}
+
+.article-content .katex {
+  font-size: 1.02em;
+}
+
+/* =========================
+   REFERENCES
+========================= */
+
+.article-content h2#references {
+  margin-top: 96px;
+  padding-top: 40px;
+
+  border-top: 1px solid var(--line);
+}
+
+.article-content h2#references + ol,
+.article-content h2#references + ul {
+  margin-top: 28px;
+  padding-left: 0;
+
+  list-style: none;
+
+  counter-reset: reference;
+}
+
+.article-content h2#references + ol li,
+.article-content h2#references + ul li {
+  position: relative;
+
+  margin: 0;
+  padding: 18px 0 18px 44px;
+
+  border-bottom: 1px solid var(--line);
+
+  color: var(--muted);
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.article-content h2#references + ol li {
+  counter-increment: reference;
+}
+
+.article-content h2#references + ol li::before {
+  content: counter(reference, decimal-leading-zero);
+
+  position: absolute;
+  left: 0;
+  top: 19px;
+
+  color: var(--green);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.article-content h2#references + ul li::before {
+  content: "↗";
+
+  position: absolute;
+  left: 0;
+  top: 17px;
+
+  color: var(--green);
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.article-content h2#references + ol li a,
+.article-content h2#references + ul li a {
+  color: var(--text);
+
+  border-bottom: 1px solid transparent;
+
+  font-weight: 600;
+
+  transition:
+    color 160ms ease,
+    border-color 160ms ease;
+}
+
+.article-content h2#references + ol li a:hover,
+.article-content h2#references + ul li a:hover {
+  color: var(--green);
+  border-bottom-color: var(--green);
+}
+
+.article-content hr {
+  margin: 72px 0;
+
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+.article-content table {
+  width: 100%;
+
+  margin: 36px 0;
+
+  border-collapse: collapse;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.article-content th,
+.article-content td {
+  padding: 14px 16px;
+
+  border: 1px solid var(--line);
+
+  text-align: left;
+}
+
+.article-content th {
+  background: var(--green-light);
+
+  font-weight: 700;
+}
+
+/* =========================
+   AUTHOR LINK
+========================= */
+
+.author-link {
+  color: var(--text);
+
+  font-weight: 700;
+
+  border-bottom: 1px solid transparent;
+
+  transition:
+    color 160ms ease,
+    border-color 160ms ease;
+}
+
+.author-link:hover {
+  color: var(--green);
+  border-bottom-color: var(--green);
+}
+
+/* =========================
+   RIGHT CONTENTS
+========================= */
+
+.right-rail {
+  position: sticky;
+  top: 32px;
+
+  align-self: start;
+
+  padding-left: 30px;
+
+  border-left: 1px solid var(--line);
+}
+
+.right-title {
+  margin-bottom: 26px;
+
+  color: var(--green);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.toc {
+  display: flex;
+  flex-direction: column;
+}
+
+.toc-item {
+  display: grid;
+
+  grid-template-columns: 30px 1fr;
+  gap: 12px;
+
+  padding: 11px 0;
+
+  color: var(--muted);
+
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.toc-item:hover {
+  color: var(--green);
+
+  transform: translateX(3px);
+}
+
+/* 지금 읽고 있는 섹션 (스크립트가 is-active 부여) */
+.toc-item.is-active {
+  color: var(--text);
+  transform: translateX(3px);
+}
+
+.toc-item.is-active .toc-text {
+  font-weight: 800;
+}
+
+/* 인터뷰 질문처럼 긴 제목은 두 줄까지만 */
+.toc-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  word-break: keep-all;
+}
+
+.toc-number {
+  color: var(--green);
+
+  font-variant-numeric: tabular-nums;
+}
+
+.toc-empty {
+  color: var(--muted);
+
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+/* =========================
+   ARTICLE END
+========================= */
+
+.article-end {
+  padding: 48px 0 80px;
+
+  border-top: 1px solid var(--line);
+}
+
+/* =========================
+   READING PROGRESS
+========================= */
+
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+
+  width: 100%;
+  height: 3px;
+
+  background: var(--green);
+
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
+/* =========================
+   NEXT READS
+========================= */
+
+.next-reads {
+  padding: 72px 0 24px;
+
+  border-top: 1px solid var(--line);
+}
+
+.next-label {
+  margin-bottom: 28px;
+
+  color: var(--green);
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.next-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.next-card {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 220px;
+  padding: 26px 24px;
+
+  background: var(--white);
+  border: 1px solid var(--line);
+
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.next-card:hover {
+  border-color: var(--green);
+  transform: translateY(-3px);
+}
+
+.next-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+
+  color: var(--green);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.next-title {
+  margin: 22px 0 10px;
+
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+  word-break: keep-all;
+}
+
+.next-subtitle {
+  margin-top: auto;
+
+  color: var(--muted);
+
+  font-size: 14px;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 10px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.back:hover {
+  color: var(--green);
+
+  transform: translateX(-3px);
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1100px) {
+  .article-layout {
+    grid-template-columns:
+      150px
+      minmax(0, 1fr);
+
+    gap: 48px;
+  }
+
+  .right-rail {
+    display: none;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 900px) {
+  .page {
+    width: min(100% - 28px, 1440px);
+  }
+
+  .article-hero {
+    padding: 52px 0;
+  }
+
+  .article-topline {
+    margin-bottom: 44px;
+  }
+
+  .article-title {
+    font-size: clamp(54px, 17vw, 90px);
+  }
+
+  .article-title[data-size="long"] {
+    font-size: clamp(38px, 11vw, 60px);
+  }
+
+  .article-title[data-size="xlong"] {
+    font-size: clamp(32px, 8.5vw, 48px);
+  }
+
+  .article-subtitle {
+    margin-top: 28px;
+
+    font-size: 20px;
+  }
+
+  .article-meta {
+    flex-direction: column;
+
+    gap: 10px;
+
+    margin-top: 42px;
+  }
+
+  .article-layout {
+    display: block;
+
+    padding: 56px 0 90px;
+  }
+
+  .article-side,
+  .right-rail {
+    display: none;
+  }
+
+  .article-content h1,
+  .article-content h2 {
+    font-size: 30px;
+  }
+
+  .article-content h3 {
+    font-size: 22px;
+  }
+
+  .next-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .next-card {
+    min-height: auto;
+  }
+
+  .article-content p,
+  .article-content ul,
+  .article-content ol {
+    font-size: 16px;
+  }
+
+  .article-hero {
+    padding: 40px 0 44px;
+  }
+
+  .article-topline {
+    margin-bottom: 32px;
+    font-size: 11px;
+  }
+
+  .article-title {
+    overflow-wrap: anywhere;
+  }
+
+  .article-subtitle {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+
+  .article-meta {
+    margin-top: 32px;
+    font-size: 11px;
+  }
+
+  .article-layout {
+    padding: 40px 0 64px;
+  }
+
+  /* 긴 링크·코드가 화면 밖으로 밀어내지 않게 */
+  .article-content a,
+  .article-content code {
+    overflow-wrap: anywhere;
+  }
+
+  /* 넓은 표·코드·수식은 그 부분만 옆으로 스크롤 */
+  .article-content table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .article-content pre {
+    margin: 28px -14px;
+    padding: 20px 18px;
+    font-size: 13px;
+  }
+
+  .article-content pre code {
+    overflow-wrap: normal;
+  }
+
+  .article-content .katex-display {
+    margin: 28px 0;
+    padding: 18px 14px;
+  }
+
+  .article-content h1,
+  .article-content h2 {
+    margin-top: 56px;
+  }
+
+  .article-content h3 {
+    margin-top: 40px;
+  }
+
+  .article-content h4 {
+    margin: 48px 0 18px;
+    padding: 14px 16px;
+    font-size: 17px;
+  }
+
+  .article-content h5 {
+    font-size: 16px;
+  }
+
+  .article-content blockquote {
+    margin: 32px 0;
+    padding: 18px 20px;
+  }
+
+  .article-content blockquote p {
+    font-size: 17px;
+  }
+
+  .article-content img {
+    margin: 28px 0;
+  }
+
+  .article-content hr {
+    margin: 48px 0;
+  }
+
+  .article-content h2#references {
+    margin-top: 64px;
+    padding-top: 28px;
+  }
+
+  .next-reads {
+    padding: 48px 0 16px;
+  }
+
+  .next-card {
+    padding: 22px 20px;
+  }
+
+  .next-title {
+    margin-top: 16px;
+    font-size: 19px;
+  }
+
+  .article-end {
+    padding: 36px 0 56px;
+  }
+}

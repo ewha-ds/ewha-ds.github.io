@@ -15,7 +15,7 @@ const latest = posts[0];
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <SEO
       title="Technology | EWHA DS"
       description="데이터사이언스와 AI의 핵심 기술 및 최신 동향을 소개합니다."
@@ -204,6 +204,71 @@ const latest = posts[0];
       @media (max-width: 900px) {
         .page {
           width: min(100% - 28px, 1440px);
+        }
+
+        /* 큰 제목이 화면보다 넓어지지 않게 (TECHNOLOGY는 72px이면 넘침) */
+        .hero {
+          padding: 48px 0 40px;
+        }
+
+        .kicker {
+          margin-bottom: 16px;
+          font-size: 11px;
+        }
+
+        .title {
+          font-size: clamp(40px, 13vw, 96px);
+          overflow-wrap: anywhere;
+        }
+
+        .desc {
+          margin-top: 20px;
+          font-size: 16px;
+        }
+
+        .latest {
+          padding: 36px 0;
+        }
+
+        .section-label {
+          margin-bottom: 16px;
+        }
+
+        .latest-card {
+          gap: 16px;
+          padding: 12px 0;
+        }
+
+        .latest-title {
+          font-size: clamp(30px, 9vw, 48px);
+          line-height: 1.1;
+          word-break: keep-all;
+        }
+
+        .latest-subtitle {
+          margin-top: 12px;
+          font-size: 16px;
+        }
+
+        .archive {
+          padding: 40px 0 72px;
+        }
+
+        .post-card {
+          min-height: 0;
+          gap: 24px;
+          padding: 24px 20px;
+        }
+
+        .post-title {
+          font-size: 22px;
+          line-height: 1.25;
+          word-break: keep-all;
+        }
+
+        .post-subtitle {
+          margin-top: 8px;
+          font-size: 15px;
         }
 
         .latest-card,

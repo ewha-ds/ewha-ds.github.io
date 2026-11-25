@@ -35,6 +35,38 @@ public/images/  본문·OG 이미지 (CMS 업로드 위치)
 - 본문은 rich-text(Markdown 저장)입니다. 수식 등 에디터가 다루기 어려운 문법은 Source 모드 사용을 안내합니다.
 - `category`는 CMS에서 폴더별로 고정값이 들어갑니다. 폴더와 category가 다르면 목록에서 사라져 보이니 직접 수정 시 주의.
 
+## 공지 (NOTICE)
+
+```
+src/content/notices/{urlKey}.md   → /notice/{urlKey}/   (목록: /notice)
+```
+
+- 행사 소식·학과 사업 홍보 등. 글(posts)과 별도 컬렉션이라 홈 FEATURED·다음에 읽을 글·RSS에는 섞이지 않습니다. sitemap에는 포함.
+- 스키마 `src/content.config.ts`(notices), CMS `.pages.yml`(notice 컬렉션). 두 파일을 함께 수정합니다.
+- 종류(`type`): `EVENT` 행사 소식 / `PROGRAM` 학과 사업 / `GENERAL` 공지. 이름은 `src/lib/notices.ts`. 종류를 추가하려면 스키마 enum, `notices.ts`, `.pages.yml` 선택지 세 곳을 함께 수정.
+- `pinned: true`면 목록 맨 위 고정. `image`는 포스터(목록 썸네일 겸용), `link`는 신청 버튼.
+- `subtitle`(한 줄 설명)은 선택. 목록 카드·제목 아래·공유 설명에 쓰입니다.
+- 공개·예약·미리보기 규칙은 글과 같습니다 (`src/lib/posts.ts`). 미리보기 주소는 `/preview/notice/{id}/`.
+- 목록 `src/pages/notice/index.astro`는 카테고리 페이지(tech.astro 등)와 같은 구조, 상세 `src/components/NoticePage.astro`는 글과 같은 레이아웃입니다.
+
+## 글·공지 상세 공통 스타일
+
+`src/styles/article.css` 를 `ArticlePage.astro`와 `NoticePage.astro`가 함께 씁니다. 글 디자인을 바꾸면 공지도 같이 바뀝니다.
+
+- `:root` 색상·`*` box-sizing·`body` 같은 기본 규칙은 각 컴포넌트의 `<style>`에 둡니다. 전역으로 옮기면 본문 수식(KaTeX) 레이아웃이 바뀝니다.
+
+## 조회수 (GoatCounter)
+
+- 설정은 `src/lib/analytics.ts`의 `GOATCOUNTER_CODE` 한 곳. 비우면 집계·표시가 모두 꺼지고 화면은 조회수가 없던 때와 같습니다.
+- 집계 스크립트는 `src/components/SEO.astro`(미리보기 페이지 제외), 표시는 `src/components/ViewCount.astro`(글·공지 상단 메타와 왼쪽 사이드).
+- GoatCounter 사이트 설정에서 **"Allow adding visitor counts on your website"** 를 켜야 숫자가 보입니다 (기본 꺼짐).
+- 숫자는 GoatCounter 쪽에서 최대 4시간 캐시되어 바로 오르지 않습니다. 서비스가 막혀도 사이트는 정상이고 조회수만 안 보입니다.
+- 계정은 개인 메일이 아니라 **학생회 공용 메일**로 만들고, 인수인계 때 비밀번호를 함께 넘깁니다. 대시보드에서 기록을 내보낼(export) 수 있습니다.
+
+## 모바일 스타일
+
+- 각 페이지 `<style>`의 `@media (max-width: 900px)` 안에서만 모바일을 조정합니다. 데스크톱 규칙은 그대로 두는 것이 원칙입니다.
+
 ## 공개 규칙과 예약 공개
 
 공개 여부는 **`src/lib/posts.ts` 한 곳**에서만 판단합니다. 목록·상세·홈 모두 이 함수를 씁니다.

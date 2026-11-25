@@ -1,0 +1,30 @@
+---
+import { goatcounterBase } from "../lib/analytics";
+
+/*
+  현재 페이지 조회수. 불러오기 전·실패 시에는 감춰져 있어 레이아웃에 영향이 없습니다.
+  감출 영역(라벨 포함)에 data-views-wrap 을 붙이면 그 영역째로 보였다 숨겨집니다.
+  예: <div data-views-wrap hidden>VIEWS <ViewCount /></div>
+*/
+---
+
+{goatcounterBase && <span class="view-count" data-goatcounter-base={goatcounterBase}></span>}
+
+<script>
+  // 같은 페이지에 여러 개가 있어도 요청은 한 번만
+  const els = Array.from(document.querySelectorAll<HTMLElement>(".view-count[data-goatcounter-base]"));
+  const base = els[0]?.dataset.goatcounterBase;
+
+  if (base && !location.pathname.startsWith("/preview")) {
+    fetch(`${base}/counter/${encodeURIComponent(location.pathname)}.json`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!data || typeof data.count !== "string") return;
+        for (const el of els) {
+          el.textContent = data.count;
+          el.closest<HTMLElement>("[data-views-wrap]")?.removeAttribute("hidden");
+        }
+      })
+      .catch(() => {});
+  }
+</script>

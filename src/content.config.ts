@@ -41,6 +41,42 @@ const posts = defineCollection({
   }),
 });
 
+// 공지 (NOTICE): 행사 소식·학과 사업 홍보 등. 글(posts)과 별도로 관리하며
+// 홈 FEATURED·다음에 읽을 글·RSS에는 섞이지 않습니다.
+// 필드를 바꿀 때는 .pages.yml 의 notice 컬렉션도 함께 수정하세요.
+const notices = defineCollection({
+  loader: glob({
+    pattern: "**/*.{md,mdx}",
+    base: "./src/content/notices",
+  }),
+
+  schema: z.object({
+    title: z.string(),
+
+    // 한 줄 설명 (선택). 제목 아래·목록 카드·링크 공유 설명에 쓰임
+    subtitle: z.string().optional(),
+
+    // 공지 종류. 이름(라벨)은 src/lib/notices.ts 에서 관리
+    type: z.enum(["EVENT", "PROGRAM", "GENERAL"]),
+
+    urlKey: z.string().optional(),
+
+    date: z.coerce.date(),
+
+    // 목록 맨 위 고정
+    pinned: z.boolean().default(false),
+
+    // 포스터·대표 이미지 (선택)
+    image: z.string().optional(),
+
+    // 신청 폼 등 바깥 링크 (선택). CMS에서 빈 값으로 저장될 수 있어 "" 허용
+    link: z.union([z.string().url(), z.literal("")]).optional(),
+
+    draft: z.boolean().default(true),
+  }),
+});
+
 export const collections = {
   posts,
+  notices,
 };
