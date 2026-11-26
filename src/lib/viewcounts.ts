@@ -10,7 +10,8 @@ import { goatcounterBase } from "./analytics";
   키가 없거나 요청이 실패하면 빈 값 → 예전처럼 브라우저에서만 불러옵니다. 빌드는 실패하지 않습니다.
 */
 
-const START = "2026-01-01T00:00:00Z";
+// 조회 시작 시각 후보. 앞의 것이 실패하면 다음 것으로 (undefined = API 기본값, 최근 1주)
+const STARTS = ["2026-01-01T00:00:00Z", "2026-11-01T00:00:00Z", undefined];
 
 type Hit = { path: string; path_id: number; count: number };
 
@@ -22,35 +23,49 @@ export function getViewCounts(): Promise<Map<string, number>> {
 }
 
 async function load(): Promise<Map<string, number>> {
-  const counts = new Map<string, number>();
   const key = process.env.GOATCOUNTER_API_KEY;
-  if (!key || !goatcounterBase) return counts;
+  if (!key || !goatcounterBase) return new Map();
 
-  try {
-    const exclude: number[] = [];
-    // 페이지 수가 많아도 최대 20번(2,000개 경로)까지만
-    for (let i = 0; i < 20; i++) {
-      const params = new URLSearchParams({ start: START, limit: "100" });
-      for (const id of exclude) params.append("exclude_paths", String(id));
-
-      const res = await fetch(`${goatcounterBase}/api/v0/stats/hits?${params}`, {
-        headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      });
-      if (!res.ok) {
-        console.warn(`[viewcounts] GoatCounter API ${res.status}; 조회수는 브라우저에서만 불러옵니다.`);
+  for (const start of STARTS) {
+    try {
+      const counts = await loadFrom(key, start);
+      if (counts) {
+        console.log(`[viewcounts] ${counts.size} paths loaded (start=${start ?? "default"})`);
         return counts;
       }
-
-      const data = (await res.json()) as { hits?: Hit[]; more?: boolean };
-      for (const hit of data.hits ?? []) {
-        counts.set(hit.path, (counts.get(hit.path) ?? 0) + hit.count);
-        exclude.push(hit.path_id);
-      }
-      if (!data.more || !data.hits?.length) break;
+    } catch (err) {
+      console.warn(`[viewcounts] GoatCounter API 실패 (start=${start ?? "default"})`, err);
     }
-    console.log(`[viewcounts] ${counts.size} paths loaded`);
-  } catch (err) {
-    console.warn("[viewcounts] GoatCounter API 실패; 조회수는 브라우저에서만 불러옵니다.", err);
+  }
+  console.warn("[viewcounts] 조회수는 브라우저에서만 불러옵니다.");
+  return new Map();
+}
+
+async function loadFrom(key: string, start: string | undefined): Promise<Map<string, number> | null> {
+  const counts = new Map<string, number>();
+  const exclude: number[] = [];
+
+  // 페이지 수가 많아도 최대 20번(2,000개 경로)까지만
+  for (let i = 0; i < 20; i++) {
+    const params = new URLSearchParams({ limit: "100" });
+    if (start) params.set("start", start);
+    for (const id of exclude) params.append("exclude_paths", String(id));
+
+    const res = await fetch(`${goatcounterBase}/api/v0/stats/hits?${params}`, {
+      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+    });
+    if (!res.ok) {
+      const body = (await res.text()).replace(/\s+/g, " ").slice(0, 200);
+      console.warn(`[viewcounts] GoatCounter API ${res.status} (start=${start ?? "default"}): ${body}`);
+      return null;
+    }
+
+    const data = (await res.json()) as { hits?: Hit[]; more?: boolean };
+    for (const hit of data.hits ?? []) {
+      counts.set(hit.path, (counts.get(hit.path) ?? 0) + hit.count);
+      exclude.push(hit.path_id);
+    }
+    if (!data.more || !data.hits?.length) break;
   }
   return counts;
 }
