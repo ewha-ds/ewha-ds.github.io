@@ -1,4 +1,5 @@
 ---
+import { buildToc } from "../lib/toc";
 import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import Header from "./Header.astro";
@@ -28,16 +29,8 @@ const formattedDate = post.data.date
   })
   .toUpperCase();
 
-// 목차: 큰 제목(#, ##)만. ##가 없는 글(예: 인터뷰 질문을 ####로 쓴 글)은
-// 글에서 가장 큰 제목 단계를 사용.
-// 본문 제목에 붙은 번호("1.", "2.1")는 목차가 01, 02로 따로 매기므로 떼어낸다.
-const tocDepth = Math.max(2, Math.min(...headings.map((heading) => heading.depth), 6));
-const tocItems = headings
-  .filter((heading) => heading.depth <= tocDepth)
-  .map((heading) => ({
-    ...heading,
-    text: heading.text.replace(/^\d+(\.\d+)*\.?\s+/, "") || heading.text,
-  }));
+// 목차 규칙은 src/lib/toc.ts
+const tocItems = buildToc(headings);
 
 // 글 끝 "다음에 읽을 글": 같은 카테고리 최신 글 우선, 모자라면 다른 카테고리 최신 글로 채움
 const otherPosts = (await getCollection("posts"))
@@ -263,14 +256,14 @@ const activeCategory =
               tocItems.length > 0 ? (
                 <nav class="toc">
                   {
-                    tocItems.map((heading, index) => (
+                    tocItems.map((heading) => (
                       <a
-                        class="toc-item"
+                        class:list={["toc-item", { "toc-sub": heading.sub }]}
                         href={`#${heading.slug}`}
                         data-slug={heading.slug}
                       >
                         <span class="toc-number">
-                          {String(index + 1).padStart(2, "0")}
+                          {heading.number}
                         </span>
 
                         <span class="toc-text">

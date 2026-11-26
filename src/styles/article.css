@@ -602,6 +602,20 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* 하위 항목: 질문 제목(####, #####). 번호 없이 들여쓰고 작게 */
+.toc-sub {
+  padding: 6px 0;
+
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.toc-sub .toc-text {
+  padding-left: 10px;
+  border-left: 1px solid var(--line);
+}
+
 .toc-empty {
   color: var(--muted);
 

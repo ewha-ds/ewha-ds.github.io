@@ -1,4 +1,5 @@
 ---
+import { buildToc } from "../lib/toc";
 import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import Header from "./Header.astro";
@@ -43,11 +44,8 @@ const description =
     .trim()
     .slice(0, 120) || `${typeLabel} · EWHA DS`);
 
-// 목차: 글과 같은 규칙 (가장 큰 제목 단계, 앞 번호 제거)
-const tocDepth = Math.max(2, Math.min(...headings.map((h) => h.depth), 6));
-const tocItems = headings
-  .filter((h) => h.depth <= tocDepth)
-  .map((h) => ({ ...h, text: h.text.replace(/^\d+(\.\d+)*\.?\s+/, "") || h.text }));
+// 목차: 글과 같은 규칙 (src/lib/toc.ts)
+const tocItems = buildToc(headings);
 
 // 글 끝 "다른 공지": 고정·최신순 3개
 const otherNotices = (await getCollection("notices"))
@@ -242,9 +240,9 @@ const otherNotices = (await getCollection("notices"))
                 <>
                   <div class="right-title">CONTENTS</div>
                   <nav class="toc">
-                    {tocItems.map((heading, index) => (
-                      <a class="toc-item" href={`#${heading.slug}`}>
-                        <span class="toc-number">{String(index + 1).padStart(2, "0")}</span>
+                    {tocItems.map((heading) => (
+                      <a class:list={["toc-item", { "toc-sub": heading.sub }]} href={`#${heading.slug}`}>
+                        <span class="toc-number">{heading.number}</span>
                         <span class="toc-text">{heading.text}</span>
                       </a>
                     ))}
