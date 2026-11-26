@@ -10,8 +10,15 @@ import { goatcounterBase } from "./analytics";
   키가 없거나 요청이 실패하면 빈 값 → 예전처럼 브라우저에서만 불러옵니다. 빌드는 실패하지 않습니다.
 */
 
-// 조회 시작 시각 후보. 앞의 것이 실패하면 다음 것으로 (undefined = API 기본값, 최근 1주)
-const STARTS = ["2026-01-01T00:00:00Z", "2026-11-01T00:00:00Z", undefined];
+// 조회 시작 시각 후보. GoatCounter 사이트 생성(2026-11-25 KST) 이전 시각을 주면 404가 나므로,
+// 생성일 0시(KST)부터 1시간씩 늦춰 가며 시도하고, 끝까지 안 되면 API 기본값(최근 1주)을 사용.
+const SITE_CREATED_KST = Date.UTC(2026, 10, 24, 15); // 2026-11-25 00:00 KST
+const STARTS: (string | undefined)[] = [
+  ...Array.from({ length: 25 }, (_, h) =>
+    new Date(SITE_CREATED_KST + h * 3_600_000).toISOString().replace(".000Z", "Z")
+  ),
+  undefined,
+];
 
 type Hit = { path: string; path_id: number; count: number };
 
@@ -27,6 +34,8 @@ async function load(): Promise<Map<string, number>> {
   if (!key || !goatcounterBase) return new Map();
 
   for (const start of STARTS) {
+    // 요청 제한(초당 4회) 피하기
+    await new Promise((r) => setTimeout(r, 300));
     try {
       const counts = await loadFrom(key, start);
       if (counts) {
@@ -35,6 +44,7 @@ async function load(): Promise<Map<string, number>> {
       }
     } catch (err) {
       console.warn(`[viewcounts] GoatCounter API 실패 (start=${start ?? "default"})`, err);
+      break;
     }
   }
   console.warn("[viewcounts] 조회수는 브라우저에서만 불러옵니다.");
@@ -57,6 +67,8 @@ async function loadFrom(key: string, start: string | undefined): Promise<Map<str
     if (!res.ok) {
       const body = (await res.text()).replace(/\s+/g, " ").slice(0, 200);
       console.warn(`[viewcounts] GoatCounter API ${res.status} (start=${start ?? "default"}): ${body}`);
+      // 키 문제(401/403)는 시작 시각을 바꿔도 같으므로 바로 포기
+      if (res.status === 401 || res.status === 403) throw new Error(`auth ${res.status}`);
       return null;
     }
 
