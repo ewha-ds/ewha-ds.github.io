@@ -157,6 +157,14 @@
 
 .article-content {
   min-width: 0;
+
+  /* 본문 제목 크기 단계. 예전 h1·h2 크기(36px)는 --heading-xl로 남겨둠 (현재 미사용) */
+  --heading-xl: 36px;
+  --heading-1: 24px; /* h1, h2 (예전 h3 크기) */
+  --heading-2: 19px; /* h3 (예전 h4 크기) */
+  --heading-3: 17px; /* h4 (예전 h5 크기) */
+  --heading-4: 16px; /* h5 (예전 h6 크기) */
+  --heading-5: 15px; /* h6 */
 }
 
 .article-content h1,
@@ -166,7 +174,7 @@
   margin: 76px 0 26px;
   padding-top: 10px;
 
-  font-size: 36px;
+  font-size: var(--heading-1);
   line-height: 1.25;
   letter-spacing: -0.045em;
 }
@@ -181,7 +189,7 @@
 
   margin: 50px 0 18px;
 
-  font-size: 24px;
+  font-size: var(--heading-2);
   line-height: 1.35;
   letter-spacing: -0.03em;
 }
@@ -195,7 +203,7 @@
   background: var(--green-light);
   border-left: 4px solid var(--green);
 
-  font-size: 19px;
+  font-size: var(--heading-3);
   line-height: 1.55;
   letter-spacing: -0.02em;
   word-break: keep-all;
@@ -209,7 +217,7 @@
 
   border-left: 3px solid var(--green);
 
-  font-size: 17px;
+  font-size: var(--heading-4);
   line-height: 1.55;
   letter-spacing: -0.01em;
   word-break: keep-all;
@@ -217,7 +225,7 @@
 
 .article-content h6 {
   margin: 32px 0 12px;
-  font-size: 16px;
+  font-size: var(--heading-5);
   line-height: 1.5;
   letter-spacing: -0.01em;
 }
@@ -783,13 +791,13 @@
     display: none;
   }
 
-  .article-content h1,
-  .article-content h2 {
-    font-size: 30px;
-  }
-
-  .article-content h3 {
-    font-size: 22px;
+  /* 모바일 제목 크기도 한 단계씩 낮춤 (예전 h1·h2 30px) */
+  .article-content {
+    --heading-1: 22px;
+    --heading-2: 17px;
+    --heading-3: 16px;
+    --heading-4: 15px;
+    --heading-5: 14px;
   }
 
   .next-grid {
@@ -872,11 +880,6 @@
   .article-content h4 {
     margin: 48px 0 18px;
     padding: 14px 16px;
-    font-size: 17px;
-  }
-
-  .article-content h5 {
-    font-size: 16px;
   }
 
   .article-content blockquote {
