@@ -241,7 +241,7 @@ const otherNotices = (await getCollection("notices"))
                   <div class="right-title">CONTENTS</div>
                   <nav class="toc">
                     {tocItems.map((heading) => (
-                      <a class:list={["toc-item", { "toc-sub": heading.sub }]} href={`#${heading.slug}`}>
+                      <a class="toc-item" data-level={heading.level} href={`#${heading.slug}`}>
                         <span class="toc-number">{heading.number}</span>
                         <span class="toc-text">{heading.text}</span>
                       </a>
