@@ -296,6 +296,19 @@
   background: var(--green-light);
 }
 
+/* 인용구 안의 제목(> ##### 질문 등): 제목 자체의 박스·선을 없애 인용구 하나로만 보이게 */
+.article-content blockquote :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0;
+  padding: 0;
+
+  border: 0;
+  background: none;
+}
+
+.article-content blockquote > * + * {
+  margin-top: 12px;
+}
+
 .article-content blockquote p {
   margin: 0;
 
