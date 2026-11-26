@@ -5,7 +5,7 @@ subtitle: 데이터사이언스 전공 생활은 실제로 어떨까? 전공 선
 urlKey: 2026-datasciencemajor-mentor-qa
 author: 제4대 데이터사이언스전공 학생회 피움
 date: 2026-11-26T15:00
-draft: true
+draft: false
 ---
 ## 2026 전공결정 간담회 | 선배벗 Q&A
 
