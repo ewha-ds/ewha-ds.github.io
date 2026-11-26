@@ -258,7 +258,7 @@ const activeCategory =
                   {
                     tocItems.map((heading) => (
                       <a
-                        class="toc-item" data-level={heading.level}
+                        class:list={["toc-item", { "toc-sub": heading.sub }]}
                         href={`#${heading.slug}`}
                         data-slug={heading.slug}
                       >

@@ -602,33 +602,18 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* 하위 단계 (### → ####/##### 순으로 한 단계씩 들여쓰기). 번호 없이 작게 */
-.toc-item[data-level="1"],
-.toc-item[data-level="2"],
-.toc-item[data-level="3"] {
+/* 하위 항목: 질문 제목(####, #####). 번호 없이 들여쓰고 작게 */
+.toc-sub {
   padding: 6px 0;
 
   font-size: 10.5px;
-  font-weight: 550;
+  font-weight: 500;
   letter-spacing: 0.01em;
 }
 
-.toc-item[data-level="1"] .toc-text {
+.toc-sub .toc-text {
   padding-left: 10px;
   border-left: 1px solid var(--line);
-}
-
-.toc-item[data-level="2"] .toc-text,
-.toc-item[data-level="3"] .toc-text {
-  margin-left: 10px;
-  padding-left: 9px;
-  border-left: 1px solid var(--line);
-
-  font-weight: 500;
-}
-
-.toc-item[data-level="3"] .toc-text {
-  margin-left: 20px;
 }
 
 .toc-empty {
