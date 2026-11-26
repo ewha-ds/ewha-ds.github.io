@@ -39,6 +39,8 @@ jobs:
         env:
           # 게시 시각을 한국 시간으로 해석 (없으면 UTC로 해석되어 9시간 늦게 공개됨)
           TZ: Asia/Seoul
+          # 조회수를 빌드 시점에 받아 둠 (src/lib/viewcounts.ts). 없어도 빌드는 됨
+          GOATCOUNTER_API_KEY: ${{ secrets.GOATCOUNTER_API_KEY }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

@@ -1,29 +1,50 @@
 ---
 import { goatcounterBase } from "../lib/analytics";
+import { getViewCount } from "../lib/viewcounts";
 
 /*
   현재 페이지 조회수. 불러오기 전·실패 시에는 감춰져 있어 레이아웃에 영향이 없습니다.
   감출 영역(라벨 포함)에 data-views-wrap 을 붙이면 그 영역째로 보였다 숨겨집니다.
   예: <div data-views-wrap hidden>VIEWS <ViewCount /></div>
+
+  숫자 = max(빌드 시점 API 값, 브라우저에서 받은 공개 카운터 값). src/lib/viewcounts.ts 참고.
 */
+
+const isPreview = Astro.url.pathname.startsWith("/preview");
+const built = goatcounterBase && !isPreview ? await getViewCount(Astro.url.pathname) : undefined;
 ---
 
-{goatcounterBase && <span class="view-count" data-goatcounter-base={goatcounterBase}></span>}
+{
+  goatcounterBase && (
+    <span class="view-count" data-goatcounter-base={goatcounterBase} data-built={built}>
+      {built?.toLocaleString("en-US")}
+    </span>
+  )
+}
 
 <script>
   // 같은 페이지에 여러 개가 있어도 요청은 한 번만
   const els = Array.from(document.querySelectorAll<HTMLElement>(".view-count[data-goatcounter-base]"));
   const base = els[0]?.dataset.goatcounterBase;
+  const built = Number(els[0]?.dataset.built) || 0;
+
+  function show(count: number) {
+    if (!count) return;
+    for (const el of els) {
+      el.textContent = count.toLocaleString("en-US");
+      el.closest<HTMLElement>("[data-views-wrap]")?.removeAttribute("hidden");
+    }
+  }
 
   if (base && !location.pathname.startsWith("/preview")) {
+    show(built);
+
     fetch(`${base}/counter/${encodeURIComponent(location.pathname)}.json`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (!data || typeof data.count !== "string") return;
-        for (const el of els) {
-          el.textContent = data.count;
-          el.closest<HTMLElement>("[data-views-wrap]")?.removeAttribute("hidden");
-        }
+        const live = Number(data.count.replace(/\D/g, "")) || 0;
+        show(Math.max(built, live));
       })
       .catch(() => {});
   }
