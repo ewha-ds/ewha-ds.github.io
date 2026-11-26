@@ -93,6 +93,7 @@ components:
         - { name: 26_09_agent, label: 'AGENTIC AI (26.09)' }
         - { name: 26_09_rag, label: 'RAG (26.09)' }
         - { name: 26_09_moe, label: 'MoE (26.09)' }
+        - { name: 26_11_mentor_qa, label: '선배벗 Q&A (26.11)' }
         - { name: research, label: 'RESEARCH 공통' }
         - { name: career, label: 'CAREER 공통' }
 
